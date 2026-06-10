@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FNP Board Prep — Quiz Menu</title>
+<style>
+  :root{
+    --bg:#F2F5F7; --card:#FFFFFF; --ink:#14283A; --muted:#5B6B7A;
+    --teal:#0E7C86; --teal-dk:#0A5A62; --line:#DEE6EB;
+    --mono:"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Avenir Next","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    line-height:1.55; padding:24px 14px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:1.35rem;font-weight:700;letter-spacing:.01em}
+  h1 span{color:var(--teal)}
+  .sub{color:var(--muted);font-size:.9rem;margin:6px 0 4px}
+  .examdate{font-family:var(--mono);font-size:.75rem;color:var(--teal-dk);background:#E3F1F2;display:inline-block;border-radius:999px;padding:4px 12px;margin-top:8px}
+  .grid{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+  a.tile{
+    display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;box-shadow:0 1px 3px rgba(20,40,58,.06);
+    transition:border-color .12s, transform .08s, box-shadow .12s;
+  }
+  a.tile:hover{border-color:var(--teal);box-shadow:0 3px 10px rgba(14,124,134,.14)}
+  a.tile:active{transform:scale(.99)}
+  .num{
+    font-family:var(--mono);font-weight:700;font-size:1.05rem;color:#fff;
+    background:var(--teal);min-width:42px;height:42px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .info{flex:1;min-width:0}
+  .name{font-weight:600;font-size:1.02rem}
+  .tag{font-size:.78rem;color:var(--muted);margin-top:1px}
+  .arrow{color:var(--muted);font-size:1.2rem;flex:0 0 auto}
+  footer{margin-top:28px;text-align:center;color:var(--muted);font-size:.78rem;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>FNP Board Prep <span>· Practice Quizzes</span></h1>
+  <p class="sub">17 subjects · 50 questions each · tap to answer, rationale shown after every question.</p>
+  <div class="examdate">ANCC FNP-BC · Exam June 29, 2026</div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    Each quiz works offline once it has loaded.<br>
+    Add this page to your Home Screen for one-tap access.
+  </footer>
+</div>
+
+<script>
+  // Ordered list of quizzes. file = exact filename in the same GitHub folder.
+  const QUIZZES = [
+    {n:1,  name:"Pharmacology",                 tag:"Drug classes, interactions, prescribing", file:"01_fnp_pharmacology.html"},
+    {n:2,  name:"Cardiovascular",               tag:"HTN, HF, arrhythmias, lipids, ACS",       file:"02_fnp_cardio.html"},
+    {n:3,  name:"Professional Role & Research",  tag:"Scope, ethics, EBP, statistics",          file:"03_fnp_profrole.html"},
+    {n:4,  name:"Women's Health",               tag:"Contraception, pregnancy, GYN",           file:"04_fnp_womens.html"},
+    {n:5,  name:"Pediatrics",                    tag:"Development, vaccines, peds illness",      file:"05_fnp_peds.html"},
+    {n:6,  name:"Endocrinology",                 tag:"Diabetes, thyroid, adrenal, calcium",     file:"06_fnp_endo.html"},
+    {n:7,  name:"Infectious Disease",            tag:"Antibiotics, STIs, HIV, TB, vaccines",    file:"07_fnp_id.html"},
+    {n:8,  name:"Pulmonary",                     tag:"Asthma, COPD, PE, lung cancer",           file:"08_fnp_pulm.html"},
+    {n:9,  name:"Health Promotion & Screening",  tag:"USPSTF, prevention, counseling",          file:"09_fnp_health.html"},
+    {n:10, name:"Musculoskeletal",               tag:"Back pain, OA/RA, gout, fractures",       file:"10_fnp_msk.html"},
+    {n:11, name:"Gastrointestinal",              tag:"GERD, IBD, liver, biliary, GI bleed",     file:"11_fnp_gi.html"},
+    {n:12, name:"Neurology",                     tag:"Stroke, seizures, headache, dementia",    file:"12_fnp_neuro.html"},
+    {n:13, name:"EENT",                          tag:"Eye, ear, nose & throat",                 file:"13_fnp_eent.html"},
+    {n:14, name:"Dermatology",                   tag:"Skin cancer, rashes, infections",         file:"14_fnp_derm.html"},
+    {n:15, name:"Mental Health",                 tag:"Depression, anxiety, screening",          file:"15_fnp_mental.html"},
+    {n:16, name:"Geriatrics",                    tag:"Aging, falls, polypharmacy, dementia",    file:"16_fnp_geri.html"},
+    {n:17, name:"Renal / GU",                    tag:"AKI/CKD, UTIs, electrolytes, prostate",   file:"17_fnp_renal.html"},
+  ];
+
+  const grid = document.getElementById('grid');
+  QUIZZES.forEach(q => {
+    const a = document.createElement('a');
+    a.className = 'tile';
+    a.href = q.file;
+    a.innerHTML =
+      '<div class="num">' + q.n + '</div>' +
+      '<div class="info"><div class="name">' + q.name + '</div>' +
+      '<div class="tag">' + q.tag + '</div></div>' +
+      '<div class="arrow">&rsaquo;</div>';
+    grid.appendChild(a);
+  });
+</script>
+</body>
+</html>
