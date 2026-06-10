@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2. FNP Cardiovascular — 50 Questions</title>
+<style>
+  :root{
+    --bg:#F2F5F7; --card:#FFFFFF; --ink:#14283A; --muted:#5B6B7A;
+    --teal:#0E7C86; --teal-dk:#0A5A62; --line:#DEE6EB;
+    --ok:#1F7A4D; --ok-bg:#E6F4EC; --bad:#B3362E; --bad-bg:#FBEAE8;
+    --mono:"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Avenir Next","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    line-height:1.55; padding:20px 14px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  h1{font-size:1.15rem;font-weight:700;letter-spacing:.01em}
+  h1 span{color:var(--teal)}
+  .score{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+  .score b{color:var(--ink)}
+  /* telemetry strip */
+  .striplabel{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--muted);margin:14px 0 5px}
+  .strip{display:flex;gap:2px;flex-wrap:nowrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .tick{flex:1;height:16px;background:#E2E9EE;border-radius:2px;cursor:pointer;transition:height .15s}
+  .tick.ok{background:var(--ok)} .tick.bad{background:var(--bad)}
+  .tick.cur{height:24px;outline:2px solid var(--teal);outline-offset:1px}
+  /* card */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;margin-top:18px;box-shadow:0 1px 3px rgba(20,40,58,.06)}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+  .qnum{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+  .chip{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-dk);background:#E3F1F2;border-radius:999px;padding:3px 10px}
+  .stem{font-size:1.02rem;margin-bottom:18px}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+    background:#FAFCFD;border:1.5px solid var(--line);border-radius:10px;
+    padding:13px 14px;margin-bottom:9px;cursor:pointer;font:inherit;color:inherit;
+    transition:border-color .12s, background .12s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--teal)}
+  .opt:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+  .opt:disabled{cursor:default}
+  .opt .ltr{font-family:var(--mono);font-weight:700;color:var(--muted);flex:0 0 auto}
+  .opt.sel-ok{border-color:var(--ok);background:var(--ok-bg)}
+  .opt.sel-bad{border-color:var(--bad);background:var(--bad-bg)}
+  .opt.reveal-ok{border-color:var(--ok);background:var(--ok-bg)}
+  .verdict{font-weight:700;margin:10px 0 6px}
+  .verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+  .rationale{background:#F4F8FA;border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:13px 15px;font-size:.93rem;margin-top:4px}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+  .btn{
+    font:inherit;font-weight:600;border:none;border-radius:10px;padding:11px 20px;cursor:pointer;
+    background:var(--teal);color:#fff;transition:background .12s;
+  }
+  .btn:hover{background:var(--teal-dk)}
+  .btn:disabled{background:#C4D0D8;cursor:default}
+  .btn.ghost{background:transparent;color:var(--teal);border:1.5px solid var(--teal)}
+  .btn.ghost:hover{background:#E3F1F2}
+  .btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+  /* results */
+  .bigscore{font-family:var(--mono);font-size:2.6rem;font-weight:700;color:var(--teal-dk)}
+  .sub{color:var(--muted);margin-bottom:18px}
+  .catrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+  .bar{flex:1;height:8px;background:#E2E9EE;border-radius:99px;overflow:hidden;margin:0 12px}
+  .bar i{display:block;height:100%;background:var(--teal)}
+  .missedlist{margin-top:16px}
+  .missedlist button{
+    font-family:var(--mono);font-size:.8rem;background:var(--bad-bg);color:var(--bad);
+    border:1px solid #E8C2BE;border-radius:8px;padding:6px 10px;margin:0 6px 6px 0;cursor:pointer;
+  }
+  .hide{display:none}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+  @media (max-width:480px){ .card{padding:16px} .strip{gap:1px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>2. FNP Cardiovascular <span>· 50 Items</span></h1>
+    <div class="score" id="scorebox">Answered <b id="sc-done">0</b>/50 &nbsp;·&nbsp; Correct <b id="sc-right">0</b></div>
+  </header>
+  <div class="striplabel">PROGRESS STRIP — GREEN CORRECT / RED MISSED — TAP A TICK TO JUMP</div>
+  <div class="strip" id="strip" aria-label="question progress"></div>
+
+  <div class="card" id="qcard"></div>
+
+  <div class="card hide" id="results"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+{c:"Hypertension",q:"Per ACC/AHA 2017 guidelines, a patient with repeated blood pressure readings of 134/86 mmHg is classified as:",o:["Elevated blood pressure","Stage 1 hypertension","Stage 2 hypertension","Normal"],a:1,r:"ACC/AHA 2017 thresholds: Normal <120/<80; Elevated 120-129/<80; Stage 1 HTN 130-139 OR 80-89; Stage 2 HTN ≥140 OR ≥90. This patient meets Stage 1 criteria. Treatment: lifestyle modification; add medication if 10-year ASCVD risk ≥10% or if patient has CVD, diabetes, or CKD."},
+{c:"Hypertension",q:"A 58-year-old Black patient with no diabetes or CKD is newly diagnosed with hypertension. Per JNC 8 and ACC/AHA guidelines, what is the preferred initial antihypertensive class?",o:["ACE inhibitor","Beta-blocker","Thiazide diuretic or calcium channel blocker","ARB"],a:2,r:"For Black patients without diabetes or CKD, thiazide diuretics and calcium channel blockers are preferred as initial therapy — ACE inhibitors and ARBs are less effective as monotherapy in Black patients (lower baseline renin activity). When CKD or diabetes with albuminuria is present, ACE inhibitor or ARB becomes first line regardless of race. This is one of the most-tested HTN pearls on the FNP boards."},
+{c:"Hypertension",q:"A patient presents with BP 198/118 mmHg, severe headache, confusion, and fundoscopic papilledema. What distinguishes this from hypertensive urgency?",o:["Only the blood pressure level matters","Hypertensive emergency is defined by acute end-organ damage, not BP level alone","Urgency requires admission; emergency does not","Both are treated identically with oral agents"],a:1,r:"Hypertensive EMERGENCY = severe HTN with ACUTE END-ORGAN DAMAGE (encephalopathy, AKI, aortic dissection, pulmonary edema, retinal hemorrhages, papilledema, unstable angina, eclampsia). Requires IV agents in an ICU; BP lowered by no more than 25% in the first hour to avoid ischemia. Hypertensive URGENCY = severe HTN (≥180/120) WITHOUT end-organ damage — managed with oral medications and close outpatient follow-up."},
+{c:"Hypertension",q:"A 72-year-old woman's blood pressure is consistently 145/88 in the office but her home readings average 118/76. What is the most likely explanation and best next step?",o:["The home monitor is inaccurate — trust office readings","White coat hypertension — confirm with 24-hour ambulatory blood pressure monitoring","Begin antihypertensive therapy immediately","This is masked hypertension — begin treatment"],a:1,r:"White coat hypertension = elevated BP in the office but normal at home. Ambulatory blood pressure monitoring (ABPM) is the gold standard for confirmation. MASKED hypertension is the OPPOSITE — normal in office but elevated at home — and actually carries WORSE cardiovascular prognosis. White coat HTN is more benign but still warrants lifestyle counseling and monitoring, as 30% progress to sustained HTN over years."},
+{c:"Hypertension",q:"Which antihypertensive class is contraindicated in a pregnant patient with hypertension?",o:["Methyldopa","Labetalol","ACE inhibitors","Nifedipine extended release"],a:2,r:"ACE inhibitors and ARBs are CONTRAINDICATED in pregnancy — they cause fetal renal dysgenesis, oligohydramnios, and neonatal anuria. Safe antihypertensives in pregnancy: methyldopa (first-line, most evidence), labetalol (beta-blocker with alpha-blocking), nifedipine extended-release, and hydralazine. Urgent treatment is indicated for severe hypertension in pregnancy (≥160/110) to prevent maternal stroke and placental abruption."},
+{c:"Heart Failure",q:"A patient's echocardiogram shows an ejection fraction of 38%. Which category of heart failure does this represent, and which medication class has proven mortality benefit?",o:["HFpEF — treat with diuretics only","HFrEF — ACE inhibitor or ARB, beta-blocker, aldosterone antagonist, and SGLT-2 inhibitor all reduce mortality","HFpEF — add digoxin for rate control","HFrEF — digoxin and furosemide reduce mortality"],a:1,r:"HFrEF = EF ≤40%. Four drug classes with mortality benefit: ACE inhibitor/ARB or ARNI (sacubitril-valsartan), beta-blocker (metoprolol succinate, carvedilol, bisoprolol ONLY), aldosterone antagonist (spironolactone), and SGLT-2 inhibitor (empagliflozin, dapagliflozin). Furosemide treats symptoms (congestion) but does NOT reduce mortality. Digoxin reduces hospitalizations but has no mortality benefit."},
+{c:"Heart Failure",q:"A 66-year-old with HFrEF has NYHA Class III symptoms — dyspnea walking from the bedroom to the kitchen. Which NYHA classification is this?",o:["Class I","Class II","Class III","Class IV"],a:2,r:"NYHA Classification: Class I = no symptoms with ordinary activity; Class II = slight limitation, comfortable at rest, symptoms with moderate-to-heavy exertion; Class III = marked limitation, comfortable at rest, symptoms with less than ordinary activity (minimal exertion); Class IV = symptoms at rest, unable to carry on any activity without discomfort. NYHA class guides both medication choices and device therapy eligibility."},
+{c:"Heart Failure",q:"Which medication class is absolutely contraindicated in HFrEF and can worsen left ventricular function?",o:["Loop diuretics","Beta-blockers (evidence-based)","Non-dihydropyridine calcium channel blockers (verapamil, diltiazem)","ACE inhibitors"],a:2,r:"Non-DHP calcium channel blockers (verapamil, diltiazem) are negative inotropes and are CONTRAINDICATED in HFrEF — they depress myocardial contractility and worsen outcomes. Dihydropyridine CCBs (amlodipine, felodipine) are acceptable if needed for hypertension or angina in HFrEF. Other things to avoid in HFrEF: NSAIDs (sodium retention), most antiarrhythmics, and thiazolidinediones (fluid retention)."},
+{c:"Heart Failure",q:"A patient with HFrEF has persistent dyspnea and bilateral leg edema despite optimal medical therapy. Which medication provides the most immediate symptom relief?",o:["Increase the beta-blocker dose","Add furosemide (loop diuretic)","Start digoxin","Add amiodarone"],a:1,r:"Loop diuretics (furosemide, torsemide, bumetanide) are the cornerstone of SYMPTOM management in congested heart failure — they relieve pulmonary congestion and peripheral edema rapidly. However, they do NOT reduce mortality. Correct dosing of diuretics while maintaining adequate renal perfusion is a careful balance. Daily weights and monitoring for hypokalemia and renal function are essential."},
+{c:"Heart Failure",q:"A 70-year-old with HFrEF has a BNP of 980 pg/mL. What does this biomarker indicate, and what are the limitations?",o:["BNP is specific for HF only; no other conditions elevate it","Elevated BNP supports a cardiac cause of dyspnea; it also rises in PE, renal failure, and AF, and is LOWER in obesity","BNP is only elevated in right heart failure","A normal BNP confirms HF is absent"],a:1,r:"BNP (and NT-proBNP) is released by ventricular myocytes under increased wall stress — extremely useful for distinguishing cardiac vs pulmonary causes of dyspnea. A LOW BNP effectively rules out HF (high sensitivity). Limitations: also elevated in PE, AF, renal failure, sepsis, and right heart conditions; FALSELY LOW in obesity (adipose tissue clears BNP). Trending BNP is more useful than a single value."},
+{c:"Atrial Fibrillation",q:"A 65-year-old male with atrial fibrillation has hypertension and type 2 diabetes. Calculate his CHA2DS2-VASc score and determine if anticoagulation is indicated.",o:["Score 1 — no anticoagulation needed","Score 2 — anticoagulation recommended","Score 3 — anticoagulation strongly recommended","Score 4 — only warfarin is appropriate, not DOACs"],a:2,r:"CHA2DS2-VASc: C=Congestive HF(1), H=HTN(1), A2=Age≥75(2), D=Diabetes(1), S2=Stroke/TIA(2), V=Vascular disease(1), A=Age 65-74(1), Sc=Sex female(1). This patient: HTN(1)+Diabetes(1)+Age 65(1)=3. Score ≥2 in men = anticoagulation recommended. DOACs are preferred over warfarin for nonvalvular AF. Aspirin alone is inadequate stroke prevention in AF."},
+{c:"Atrial Fibrillation",q:"A 72-year-old with new-onset AF is hemodynamically stable. For RATE CONTROL, which drug is the most appropriate first-line choice?",o:["Digoxin","Amiodarone","Metoprolol or diltiazem","Flecainide"],a:2,r:"Rate control first-line: beta-blockers (metoprolol) or non-DHP CCBs (diltiazem, verapamil). Target resting rate <80 bpm. Digoxin is weak for rate control (only slows rate at rest via vagal effect, not with exertion) — used as add-on if needed. Amiodarone is for RHYTHM control or when other agents fail. Flecainide is for rhythm control only and CANNOT be used in structural heart disease."},
+{c:"Atrial Fibrillation",q:"A patient with persistent AF is cardioverted successfully to sinus rhythm. The provider considers long-term rhythm control with flecainide. Which test must be done first?",o:["24-hour Holter monitor","Echocardiogram to rule out structural heart disease","Pulmonary function tests","Genetic testing for channelopathies"],a:1,r:"Flecainide (and propafenone) are Class IC antiarrhythmics that are CONTRAINDICATED in structural heart disease (coronary artery disease, HF, significant LVH) because they increase mortality in this context (CAST trial). Echocardiogram must be done first. Patients with structural disease need amiodarone or dofetilide instead. This is a classic board distinction: no-heart-disease AF = IC agents okay; structural disease = amiodarone or dofetilide."},
+{c:"Coronary Artery Disease",q:"A 55-year-old male reports substernal pressure with exertion, relieved by rest within 5 minutes, occurring 3 times this week. Most appropriate initial management?",o:["Reassure and recheck in 3 months","Order an exercise stress test, start aspirin and a beta-blocker, sublingual nitrate PRN","Send directly to the emergency department for STEMI workup","Start only a statin"],a:1,r:"This is stable angina — predictable exertional chest pain relieved by rest or nitroglycerin. Initial management: aspirin 81 mg daily, beta-blocker (reduces oxygen demand, first-line), sublingual NTG PRN, statin. Then risk-stratify with stress testing. Send to the ED for unstable angina (rest pain, new onset, crescendo pattern) or if troponin is elevated. Stable angina managed outpatient."},
+{c:"Coronary Artery Disease",q:"Which biomarker is MOST specific for myocardial injury and is now the standard for diagnosing acute MI?",o:["CK-MB","LDH","Myoglobin","Troponin I or T (high-sensitivity)"],a:3,r:"Troponin (I and T) is the most sensitive and specific biomarker for myocardial necrosis. High-sensitivity troponin rises within 1-3 hours, peaks at 12-24 hours, and remains elevated for 7-10 days — useful for late presenters. CK-MB rises and falls faster (useful for detecting reinfarction). Myoglobin is sensitive but not cardiac-specific. LDH is outdated. Serial troponins (0 and 3 hours, or 0 and 1 hour with hs-cTn) are the standard workup."},
+{c:"Coronary Artery Disease",q:"A 62-year-old with chest pain for 2 hours has ST elevations in leads II, III, and aVF. Which vessel is most likely occluded, and what is the priority action?",o:["Left anterior descending — start IV heparin and observe","Right coronary artery — activate cath lab for emergent PCI within 90 minutes","Left circumflex — start thrombolytics immediately","Diagonal branch — schedule stress test"],a:1,r:"Inferior STEMI (ST elevation in II, III, aVF) = right coronary artery (RCA) occlusion in most cases. Emergent PCI within 90 minutes of first medical contact (door-to-balloon time) is the gold standard. Give aspirin 325 mg + P2Y12 inhibitor (ticagrelor or clopidogrel) + anticoagulation. Check right-sided leads (V4R) for right ventricular involvement — if RV infarct, avoid nitrates (can cause severe hypotension) and give IV fluids."},
+{c:"Valvular Disease",q:"A 70-year-old has a harsh crescendo-decrescendo systolic murmur at the right upper sternal border radiating to the carotids. He reports angina and one episode of syncope. What is the classic survival implication of his symptoms?",o:["Syncope carries the worst prognosis — average survival 1 year","Angina has the worst prognosis — average survival 2 years","Heart failure carries the worst prognosis — average survival 1-2 years","All three symptoms carry the same prognosis"],a:2,r:"Classic aortic stenosis survival after symptom onset: Angina = ~5 years, Syncope = ~3 years, Heart failure = ~1-2 years (worst). The triad of angina, syncope, and dyspnea/HF defines symptomatic severe AS — definitive treatment is valve replacement. Asymptomatic severe AS is monitored closely. The murmur: harsh, crescendo-decrescendo, systolic, right 2nd ICS, radiates to carotids, with pulsus parvus et tardus (weak, delayed carotid pulse)."},
+{c:"Valvular Disease",q:"A patient has a holosystolic murmur at the apex that radiates to the axilla, loudest with handgrip. Most likely diagnosis?",o:["Aortic stenosis","Mitral regurgitation","Aortic regurgitation","Hypertrophic cardiomyopathy"],a:1,r:"Mitral regurgitation: holosystolic (pansystolic) murmur at the apex, radiating to the axilla, high-pitched blowing quality. Increases with maneuvers that increase afterload (handgrip, squatting). Causes: MVP, rheumatic disease, papillary muscle dysfunction post-MI, dilated cardiomyopathy. Chronic MR compensated for years; acute MR (post-MI rupture) is an emergency with pulmonary edema."},
+{c:"Valvular Disease",q:"On auscultation, a mid-systolic click followed by a late systolic murmur is heard at the apex. Squatting makes the click move LATER and the murmur SHORTER. What is this finding and the explanation?",o:["Aortic stenosis — maneuver increases pressure gradient","Mitral valve prolapse — squatting increases preload, filling the LV more and delaying prolapse","Hypertrophic cardiomyopathy — squatting decreases obstruction","Mitral stenosis — opening snap timing changes with preload"],a:1,r:"Mitral valve prolapse: the leaflets prolapse into the LA when LV volume decreases. Squatting INCREASES venous return (preload) → LV fills more → leaflets stay competent longer → click moves LATER and murmur SHORTENS. Valsalva and standing have the OPPOSITE effect (decrease preload → earlier click, longer murmur). MVP is the most common valvular disease in young women; most cases are benign. Prophylaxis not routinely indicated unless prior IE."},
+{c:"Valvular Disease",q:"A patient has a decrescendo diastolic murmur at the left sternal border with a wide pulse pressure, bounding peripheral pulses, and head bobbing. What is the diagnosis?",o:["Mitral stenosis","Aortic stenosis","Aortic regurgitation","Tricuspid regurgitation"],a:2,r:"Aortic regurgitation: decrescendo diastolic murmur at left sternal border (best heard sitting forward), wide pulse pressure (elevated systolic + low diastolic), bounding water-hammer (Corrigan's) pulse, de Musset's sign (head bobbing), Quincke's sign (nail-bed pulsations). Chronic AR is well-tolerated for years; acute AR (from endocarditis or dissection) is a surgical emergency with flash pulmonary edema."},
+{c:"Arrhythmias",q:"A patient presents with regular narrow-complex tachycardia at 180 bpm, sudden onset, no P waves visible. First-line management?",o:["Immediate synchronized cardioversion","Vagal maneuvers, then adenosine 6 mg rapid IV if unsuccessful","Amiodarone 150 mg IV bolus","Verapamil PO"],a:1,r:"SVT (AV nodal reentrant tachycardia or AVRT) management: start with vagal maneuvers (modified Valsalva, carotid sinus massage). If unsuccessful, adenosine 6 mg rapid IV push (half-life ~10 seconds) — can repeat with 12 mg. Adenosine transiently blocks the AV node, breaking the reentrant circuit. Cardioversion is reserved for unstable SVT. IV diltiazem or beta-blockers are alternatives if adenosine fails."},
+{c:"Arrhythmias",q:"A 25-year-old with recurrent palpitations has an ECG showing a short PR interval and a delta wave (slurred QRS upstroke). He is in AF with a ventricular rate of 210 bpm. What is contraindicated?",o:["Electrical cardioversion","Procainamide IV","Adenosine or digoxin or verapamil","Immediate consultation with electrophysiology"],a:2,r:"Wolff-Parkinson-White with AF is a special emergency: AV nodal blocking agents (adenosine, digoxin, verapamil, diltiazem, beta-blockers) are CONTRAINDICATED. Blocking the AV node forces all conduction down the accessory pathway, potentially causing ventricular fibrillation. Treatment: procainamide (slows accessory pathway), or immediate cardioversion if unstable. Definitive treatment: radiofrequency ablation."},
+{c:"Arrhythmias",q:"An ECG shows P waves at 80/min, QRS complexes at 38/min, with NO relationship between P waves and QRS. What is this and how is it treated?",o:["First-degree AV block — observe","Second-degree type I — no treatment needed","Third-degree (complete) heart block — atropine temporarily, permanent pacemaker definitively","SVT — vagal maneuvers"],a:2,r:"Complete (third-degree) heart block: P waves and QRS complexes are completely dissociated — the atria and ventricles beat independently. If the escape rhythm is junctional (narrow), it is more reliable; ventricular escape (wide) is less reliable and more dangerous. Symptomatic treatment: atropine IV or transcutaneous pacing; definitive treatment is permanent pacemaker. Causes: inferior MI (RCA), Lyme disease, medication toxicity (digoxin, beta-blockers), degenerative conduction disease."},
+{c:"Arrhythmias",q:"A patient's ECG shows diffuse saddle-shaped ST elevations in most leads, with PR depression in lead II. The patient has sharp chest pain that worsens lying flat and improves leaning forward. Most likely diagnosis?",o:["Anterior STEMI","Acute pericarditis","Pulmonary embolism","Hypertrophic cardiomyopathy"],a:1,r:"Pericarditis ECG: diffuse, concave (saddle-shaped) ST elevations across multiple leads (not confined to one coronary territory — key difference from STEMI), and PR DEPRESSION (highly specific). Clinical triad: pleuritic chest pain, pericardial friction rub, ECG changes. Treatment: NSAIDs + colchicine. Avoid NSAIDs in post-MI pericarditis. Restrict activity until symptom-free. Corticosteroids only if refractory (not first-line — increase recurrence)."},
+{c:"Arrhythmias",q:"A patient on methadone maintenance and azithromycin for pneumonia develops palpitations. ECG shows QTc of 520 ms. What is the concern?",o:["Atrial flutter — treat with cardioversion","QT prolongation — risk of torsades de pointes (polymorphic VT)","PR prolongation — first-degree heart block","ST elevation — emergent cath lab activation"],a:1,r:"QT prolongation (QTc >450 ms men, >470 ms women; dangerous >500 ms) risks torsades de pointes — a polymorphic VT that can degenerate into VF and sudden death. Both methadone AND macrolides prolong QT. Other culprits: fluoroquinolones, antipsychotics (haloperidol, ziprasidone), Class IA/III antiarrhythmics, TCAs, ondansetron at high IV doses. Electrolyte abnormalities (hypokalemia, hypomagnesemia) exacerbate risk. Treatment of torsades: IV magnesium sulfate, discontinue offending drug."},
+{c:"Pericardium / Myocardium",q:"Beck's triad is present on exam. Which diagnosis does this indicate and what is the immediate treatment?",o:["Tension pneumothorax — needle decompression","Cardiac tamponade — pericardiocentesis","Constrictive pericarditis — pericardiectomy","Pulmonary embolism — tPA"],a:1,r:"Beck's triad: (1) Hypotension, (2) Elevated JVP (JVD), (3) Muffled heart sounds. This is cardiac tamponade — fluid compresses the heart and impairs filling. Additional signs: pulsus paradoxus (SBP drops >10 mmHg with inspiration), tachycardia, electrical alternans on ECG. Immediate treatment: pericardiocentesis (needle drainage). IV fluids temporarily to maintain filling pressure. Most common causes: malignancy, uremia, viral pericarditis, trauma, post-procedure."},
+{c:"Pericardium / Myocardium",q:"A 35-year-old presents with acute-onset dyspnea and chest pain after a viral illness. Echo shows globally reduced EF of 25% and dilated chambers. Troponin is mildly elevated. Most likely diagnosis?",o:["Acute pericarditis","Viral myocarditis with dilated cardiomyopathy","Hypertrophic cardiomyopathy","Prinzmetal angina"],a:1,r:"Viral myocarditis typically follows an upper respiratory or GI illness (Coxsackievirus B most common). It can cause dilated cardiomyopathy acutely. Management: supportive HF therapy (ACE inhibitor, beta-blocker, diuresis). Avoid NSAIDs (worsen myocarditis). Avoid high-intensity exercise until recovered. Cardiac MRI is the gold standard diagnostic tool. Most cases resolve, but some progress to chronic dilated cardiomyopathy."},
+{c:"Peripheral Vascular",q:"A patient has leg pain with walking that resolves with rest. ABI is 0.65. What is the diagnosis and what does the ABI value indicate?",o:["DVT — ABI is irrelevant for DVT","Peripheral arterial disease, moderate severity — normal ABI is 1.0-1.4; ABI 0.41-0.70 is moderate PAD","Venous insufficiency — ABI confirms","Normal finding in athletes"],a:1,r:"Peripheral artery disease: ABI normal 1.0-1.4; borderline 0.91-0.99; mild 0.71-0.90; MODERATE 0.41-0.70; severe ≤0.40. This is intermittent claudication (calf pain with exertion, relieved by rest) — classic PAD symptom. ABI >1.4 indicates non-compressible calcified vessels (seen in diabetes, ESRD). Management: smoking cessation, antiplatelet, statin, supervised exercise, cilostazol for symptom relief. Revascularization for rest pain or non-healing ulcers."},
+{c:"Peripheral Vascular",q:"A 58-year-old with leg swelling and calf tenderness has a Wells score of 3 (high probability) for DVT. Best next step?",o:["D-dimer only — if negative, no further workup needed","Immediate compression ultrasound and start anticoagulation if confirmed","MRI of the leg","Venogram only"],a:1,r:"DVT workup by pre-test probability (Wells score): Low probability: D-dimer first (if negative, DVT excluded); High probability: compression ultrasound first — don't waste time on D-dimer (it will be positive but is nonspecific). If ultrasound confirms DVT: start anticoagulation (DOAC preferred over LMWH/warfarin for most patients). Duration: provoked DVT (3 months), unprovoked DVT (at least 3-6 months, consider indefinite)."},
+{c:"Peripheral Vascular",q:"A 65-year-old male who has smoked at least a pack a day for 40 years is due for a preventive visit. Per USPSTF guidelines, which one-time screening test is indicated?",o:["Annual low-dose CT chest for lung cancer only — no vascular screening indicated","One-time abdominal ultrasound to screen for abdominal aortic aneurysm","Carotid duplex to screen for carotid stenosis","Ankle-brachial index for PAD screening"],a:1,r:"USPSTF recommends a ONE-TIME abdominal ultrasound for AAA screening in MEN aged 65-75 who have EVER smoked (≥100 cigarettes in their lifetime) — Grade B recommendation. NOT recommended for women who never smoked (Grade D). Asymptomatic carotid stenosis screening is AGAINST USPSTF recommendations (Grade D). AAA threshold for repair: ≥5.5 cm men, ≥5.0 cm women, or rapid expansion >0.5 cm/6 months."},
+{c:"Hypertrophic Cardiomyopathy",q:"A 17-year-old athlete collapses during a basketball game. He is resuscitated. Exam reveals a systolic murmur at the LLSB that gets LOUDER with Valsalva and SOFTER with squatting. Most likely diagnosis?",o:["Aortic stenosis","Mitral regurgitation","Hypertrophic obstructive cardiomyopathy (HOCM)","Innocent (Still's) murmur"],a:2,r:"HOCM: dynamic outflow tract obstruction that WORSENS when LV volume DECREASES (Valsalva, standing) and IMPROVES when LV volume INCREASES (squatting, handgrip). This is the OPPOSITE of fixed obstructions. Most common cause of sudden cardiac death in young athletes. Treat: beta-blockers or verapamil; avoid vasodilators, nitrates, digoxin, dehydration. High-risk patients get ICD. Advise against competitive sports."},
+{c:"Dyslipidemia",q:"A 52-year-old with no prior CVD events has hypertension, diabetes, and a 10-year ASCVD risk of 14%. Per ACC/AHA guidelines, what statin intensity is indicated?",o:["No statin — risk below 20%","Low-intensity statin only","Moderate-intensity statin","High-intensity statin"],a:2,r:"ACC/AHA statin recommendations: (1) Clinical ASCVD → high-intensity statin; (2) LDL ≥190 → high-intensity; (3) Age 40-75 with diabetes → at least moderate-intensity; (4) Age 40-75 without diabetes or ASCVD, 10-year risk ≥7.5% → moderate-to-high intensity. This patient has diabetes AND elevated risk — moderate-intensity statin is appropriate. High-intensity if 10-year risk ≥20% or additional risk enhancers. 10% threshold is NOT a cutoff for moderate; it's a range where risk discussion occurs."},
+{c:"Dyslipidemia",q:"A patient on maximum-dose rosuvastatin still has LDL of 118 mg/dL and established coronary artery disease. What is the most appropriate add-on therapy?",o:["Switch to a different statin","Add ezetimibe","Add a fibrate","Add niacin"],a:1,r:"Ezetimibe blocks intestinal cholesterol absorption and is the preferred add-on to statin therapy when LDL goals are not met. It reduces LDL by an additional 15-20% and has proven cardiovascular benefit (IMPROVE-IT trial) on top of statins. PCSK9 inhibitors (evolocumab, alirocumab) are the next step if ezetimibe is still insufficient — very expensive, require prior authorization. Fibrates are for high triglycerides, not LDL. Niacin does not reduce cardiovascular events."},
+{c:"Dyslipidemia",q:"A 45-year-old with no CVD has a fasting triglyceride level of 620 mg/dL and epigastric pain after fatty meals. Most important immediate concern?",o:["Start a statin immediately","Triglycerides above 500 mg/dL significantly raise risk of acute pancreatitis — fibrate or omega-3 fatty acids indicated","Refer to cardiologist for immediate catheterization","LDL is the priority — order a lipid panel recheck"],a:1,r:"Triglycerides above 500 mg/dL (severe hypertriglyceridemia) significantly increases pancreatitis risk. Triglycerides >1000 mg/dL: high pancreatitis risk — treat urgently. First-line: fibrate (fenofibrate) or high-dose omega-3 fatty acids (icosapentaenoic acid — Vascepa). Dietary fat restriction. Statins are not effective for very high TG. Causes of very high TG: poorly controlled DM, alcohol, hypothyroidism, nephrotic syndrome, certain medications (thiazides, beta-blockers, estrogens, corticosteroids)."},
+{c:"Heart Failure Devices",q:"A patient with HFrEF has EF of 30%, is on optimal medical therapy, and has LBBB with QRS duration of 158 ms. Which device therapy is indicated?",o:["Implantable cardioverter-defibrillator (ICD) only","Cardiac resynchronization therapy (CRT) ± ICD","Permanent pacemaker only","No device indicated — optimize medications first for 6 more months"],a:1,r:"CRT (biventricular pacing) is indicated for HFrEF with: EF ≤35%, LBBB morphology, QRS ≥150 ms (strongest evidence), NYHA Class II-IV on optimal medical therapy. CRT corrects the electrical dyssynchrony from LBBB, improving pump function and reducing hospitalizations/mortality. CRT-D (with ICD) is typically chosen for most patients, since EF ≤35% also qualifies for primary prevention ICD. QRS 130-149 ms with LBBB is also a reasonable indication."},
+{c:"Heart Failure Devices",q:"For PRIMARY PREVENTION of sudden cardiac death with an ICD, what EF threshold and time requirement must be met?",o:["EF ≤45%, any time after diagnosis","EF ≤35%, after at least 3 months of optimal medical therapy","EF ≤50%, immediately upon diagnosis","EF ≤40%, after 1 month of therapy"],a:1,r:"Primary prevention ICD indications: EF ≤35% DESPITE at least 3 months of optimal medical therapy (to allow for recovery), NYHA Class II-III, life expectancy >1 year with good functional status. The 3-month wait is important because many patients improve their EF with therapy. Don't implant an ICD too early — recheck EF after 3 months of ACE inhibitor + beta-blocker therapy before deciding."},
+{c:"Metabolic Syndrome",q:"A patient has a waist circumference of 106 cm (male), BP 134/86, fasting glucose 106 mg/dL, triglycerides 168 mg/dL, and HDL of 38 mg/dL. Does he have metabolic syndrome?",o:["No — only 3 of 5 criteria needed and he only meets 2","Yes — he meets all 5 criteria","Yes — he meets 4 of 5 criteria (all except blood pressure)","Metabolic syndrome requires fasting glucose above 126 mg/dL to qualify"],a:2,r:"ATP III metabolic syndrome criteria (3 of 5 required): Waist >102 cm men/>88 cm women ✓; BP ≥130/85 or on treatment ✓; Fasting glucose ≥100 or on treatment ✓; TG ≥150 ✓; HDL <40 men/<50 women ✓. This patient meets ALL 5. Metabolic syndrome significantly raises CVD and type 2 diabetes risk. Treatment is lifestyle modification targeting each component. Not a single-drug condition — address each risk factor individually."},
+{c:"Coronary Artery Disease",q:"A patient has angina at rest occurring mostly in the early morning hours with transient ST elevations that resolve completely. Coronary angiogram shows no obstructive disease. Diagnosis and treatment?",o:["NSTEMI — admit and start heparin","Prinzmetal (variant) angina from coronary vasospasm — treat with nitrates and calcium channel blockers, AVOID beta-blockers","Stable angina — stress test and beta-blocker","Pericarditis — start NSAIDs and colchicine"],a:1,r:"Prinzmetal angina: rest pain (often early morning), transient ST elevation during pain that resolves, normal or near-normal coronaries on angiogram. Cause: focal coronary artery vasospasm. Associated with smoking, cocaine, migraine history. Treatment: calcium channel blockers (first-line) and nitrates. AVOID beta-blockers — unopposed alpha-mediated vasoconstriction can worsen spasm. Risk of ventricular arrhythmia during episodes if prolonged."},
+{c:"Coronary Artery Disease",q:"After a successful PCI with a drug-eluting stent for NSTEMI, a patient is discharged on aspirin 81 mg and ticagrelor. How long should DUAL antiplatelet therapy (DAPT) be continued?",o:["1 month","3 months","At least 12 months","Indefinitely without stopping ticagrelor"],a:2,r:"DAPT (aspirin + P2Y12 inhibitor — clopidogrel, ticagrelor, or prasugrel) after drug-eluting stent for ACS: at least 12 months to prevent stent thrombosis. After 12 months, P2Y12 inhibitor may be stopped; aspirin is continued indefinitely. Early discontinuation raises stent thrombosis risk significantly. Longer DAPT may be considered in high ischemic risk; shorter courses (3-6 months) only in high bleeding risk patients. This is a board-tested duration question."},
+{c:"Orthostatic Hypotension",q:"An 80-year-old reports dizziness and near-fainting when standing up. Supine BP is 148/88; after 2 minutes standing it is 118/74. What is the diagnosis and most common correctable cause?",o:["Normal variant in elderly — no treatment needed","Orthostatic hypotension (SBP drop ≥20 mmHg) — review medications for offending agents","Syncope — refer for tilt-table testing immediately","Postprandial hypotension — restrict dietary sodium"],a:1,r:"Orthostatic hypotension = SBP drop ≥20 mmHg OR DBP drop ≥10 mmHg within 3 minutes of standing. Most common correctable cause in elderly: MEDICATIONS (alpha-blockers, diuretics, antihypertensives, TCAs, antipsychotics, levodopa). Other causes: dehydration, autonomic neuropathy (diabetes, Parkinson's), prolonged bed rest. Management: review and reduce offending meds, adequate hydration, compression stockings, slow position changes."},
+{c:"Pulmonary Embolism",q:"A 55-year-old post-knee replacement has acute dyspnea, tachycardia, pleuritic chest pain, and oxygen saturation of 89%. CT pulmonary angiogram confirms massive PE with hypotension. Most appropriate treatment?",o:["Anticoagulation with heparin only","Systemic thrombolysis (tPA) for massive PE with hemodynamic instability","Inferior vena cava filter only","Immediate surgical embolectomy in all cases"],a:1,r:"Massive PE = PE with hemodynamic instability (hypotension, shock). Treatment: systemic thrombolysis (alteplase/tPA) is indicated — it rapidly dissolves the clot and reduces right heart strain. Absolute contraindications to thrombolytics must be checked (recent surgery within 10 days is a RELATIVE contraindication — risk/benefit must be weighed). Anticoagulation alone is insufficient for massive PE. Surgical embolectomy or catheter-directed therapy if thrombolytics are contraindicated."},
+{c:"Coronary Artery Disease",q:"A 48-year-old woman presents with fatigue, jaw pain, and nausea with exertion, no chest pain. ECG and initial troponin are normal. What is the most appropriate approach?",o:["Discharge with reassurance — no chest pain, no cardiac cause","Admit for serial troponins and cardiology evaluation — women often present with atypical ACS symptoms","Prescribe an anxiolytic and follow up in 2 weeks","Order a thyroid panel only"],a:1,r:"Women present with ACS atypically MORE OFTEN than men — fatigue, jaw pain, back pain, nausea, and dyspnea WITHOUT classic chest pressure are common presentations. A normal initial ECG and troponin do not rule out ACS. Serial troponins (repeat at 3-6 hours) are required. Dismissing these symptoms as anxiety or GI is one of the most common and dangerous errors. ACS is under-recognized and under-treated in women."},
+{c:"Raynaud's Phenomenon",q:"A 32-year-old woman reports fingers turning white, then blue, then red in the cold. This has occurred for 3 years with no other symptoms. ANA is negative. Most appropriate first-line pharmacologic treatment?",o:["Propranolol","Aspirin","Dihydropyridine calcium channel blocker (nifedipine)","Sildenafil"],a:2,r:"Primary Raynaud's (no underlying connective tissue disease): First-line behavioral — keep extremities warm, avoid cold/smoking/vasoconstrictors (including beta-blockers and stimulants). Pharmacologic first-line: dihydropyridine CCBs (nifedipine, amlodipine) — vasodilators. Sildenafil and bosentan reserved for severe/secondary Raynaud's. Secondary Raynaud's (associated with scleroderma, lupus, CREST) is more severe and requires aggressive treatment. Positive ANA, asymmetric disease, or digital ulcers signal secondary disease — warrant workup."},
+{c:"Endocarditis Prophylaxis",q:"Which patient requires antibiotic prophylaxis before a dental extraction?",o:["A 45-year-old with mitral valve prolapse and no regurgitation","A 60-year-old with a prosthetic mechanical aortic valve","A 55-year-old with well-controlled hypertension","A 35-year-old with a previous CABG"],a:1,r:"AHA 2007 prophylaxis indications (high-risk cardiac conditions): prosthetic cardiac valves, prior infective endocarditis, congenital heart disease (unrepaired cyanotic CHD, repaired CHD with residual defect adjacent to prosthetic material, repaired CHD within 6 months), and cardiac transplant with structural valvulopathy. MVP WITHOUT regurgitation: prophylaxis NOT indicated. Prior CABG: NOT an indication. Prophylaxis: amoxicillin 2 g orally 30-60 minutes before procedure."},
+{c:"Heart Failure",q:"A patient with HFrEF has persistent, minimally symptomatic AF. Which medication is appropriate for rate control AND has specific benefit in HFrEF with AF?",o:["Verapamil","Diltiazem","Digoxin","Digoxin or beta-blocker — beta-blocker preferred if tolerated"],a:3,r:"In HFrEF with AF: beta-blockers (metoprolol, carvedilol) are preferred for rate control because they also improve HF outcomes. Digoxin can be added if rate control is inadequate or beta-blockers are not tolerated — it helps rate control (especially at rest) and has a modest positive inotropic effect. AVOID verapamil and diltiazem in HFrEF — negative inotropes that worsen systolic function. Digoxin does not reduce mortality but reduces hospitalization and symptoms."},
+{c:"Hypertension",q:"Per SPRINT trial findings and ACC/AHA 2017 guidelines, what is the recommended blood pressure target for a 70-year-old with hypertension, no diabetes, and established CVD?",o:["<150/90 — higher target in elderly is safer","<140/90","<130/80","<120/70 — more intensive is always better"],a:2,r:"ACC/AHA 2017 recommends <130/80 for most adults with confirmed hypertension, including those with CVD, CKD, and high ASCVD risk. The SPRINT trial (non-diabetic, high-risk patients) showed intensive treatment to <120 mmHg SBP reduced cardiovascular events and mortality — driving the guideline change. Important: diabetic patients were EXCLUDED from SPRINT; <130/80 applies to diabetes per ADA guidelines. More intensive targets in frail elderly must be individualized due to orthostatic hypotension and fall risk."},
+{c:"Screening",q:"USPSTF recommends AGAINST screening for which cardiovascular condition in the general asymptomatic adult population?",o:["Hypertension","Dyslipidemia (via lipid panel) in adults 35 and older","Asymptomatic carotid artery stenosis","Abdominal aortic aneurysm in male smokers 65-75"],a:2,r:"USPSTF GRADE D (recommend against) screening for asymptomatic carotid artery stenosis — the harms of carotid endarterectomy or stenting (stroke, death) outweigh benefits in patients with no symptoms. Symptomatic patients (TIA, stroke) should absolutely be evaluated with carotid imaging. Hypertension screening is Grade A; dyslipidemia/lipid panel in adults with cardiovascular risk is recommended; AAA screening in male smokers 65-75 is Grade B."},
+,
+{c:"Arrhythmias",q:"A patient is found to have a heart rate of 42 bpm with no symptoms during a routine exam. She is an avid marathon runner. BP is 118/72, she feels well. Best management?",o:["Atropine IV immediately","Permanent pacemaker referral","Reassurance — sinus bradycardia in athletes is a normal vagal adaptation","Holter monitor and cardiology referral urgently"],a:2,r:"Sinus bradycardia in a well-conditioned athlete is a normal physiologic finding — high vagal tone from aerobic training. Treatment is only indicated if the patient is SYMPTOMATIC (dizziness, syncope, fatigue, hemodynamic instability). Asymptomatic bradycardia in an athlete requires no treatment. In contrast, symptomatic bradycardia in a non-athlete warrants evaluation for sick sinus syndrome, AV block, medication side effects, or hypothyroidism."},
+{c:"Heart Failure",q:"A 75-year-old with preserved ejection fraction (EF 58%) has dyspnea, bilateral ankle edema, and elevated BNP. Diagnosis and first-line treatment?",o:["HFrEF — start ACE inhibitor and beta-blocker for mortality benefit","HFpEF — treat underlying causes, diurese for congestion, and control heart rate and blood pressure","HFpEF — start sacubitril-valsartan (ARNI) for proven mortality benefit","HFrEF — add SGLT-2 inhibitor for mortality benefit"],a:1,r:"HFpEF (EF ≥50%): the heart is stiff and fills poorly. Unlike HFrEF, no drug class has proven mortality benefit in HFpEF until recently. Management: (1) Diuretics for fluid congestion symptom relief; (2) Treat underlying causes — control HTN (most common cause), rate control for AF, treat sleep apnea; (3) SGLT-2 inhibitors (empagliflozin) showed modest benefit in HFpEF in the EMPEROR-Preserved trial. ACE inhibitors and beta-blockers have NOT shown mortality benefit in HFpEF."},
+{c:"Coronary Artery Disease",q:"A 60-year-old with stable angina is on aspirin, metoprolol, and sublingual nitroglycerin PRN. Despite maximal beta-blocker dose his angina persists. Best next step?",o:["Double the aspirin dose","Add a long-acting nitrate or calcium channel blocker","Refer immediately for CABG","Start an SSRI for anxiety"],a:1,r:"For stable angina refractory to beta-blockers: add a long-acting nitrate (isosorbide mononitrate) or a dihydropyridine calcium channel blocker (amlodipine) — both reduce anginal frequency. Avoid combining a non-DHP CCB (verapamil, diltiazem) with a beta-blocker due to additive bradycardia and heart block risk. If symptoms persist despite dual therapy, refer for stress testing or coronary angiography to evaluate for revascularization. Ranolazine is also an option as add-on antianginal therapy."}
+];
+
+const N = QUESTIONS.length;
+let idx = 0;
+let answers = new Array(N).fill(null); // selected option index
+const LETTERS = ["A","B","C","D"];
+
+const strip = document.getElementById("strip");
+const qcard = document.getElementById("qcard");
+const resultsCard = document.getElementById("results");
+
+function buildStrip(){
+  strip.innerHTML = "";
+  for(let i=0;i<N;i++){
+    const t = document.createElement("div");
+    t.className = "tick";
+    t.title = "Question " + (i+1);
+    t.addEventListener("click", ()=>{ idx = i; render(); });
+    strip.appendChild(t);
+  }
+}
+function paintStrip(){
+  const ticks = strip.children;
+  for(let i=0;i<N;i++){
+    const t = ticks[i];
+    t.className = "tick";
+    if(answers[i] !== null){
+      t.classList.add(answers[i] === QUESTIONS[i].a ? "ok" : "bad");
+    }
+    if(i === idx && !resultsVisible()) t.classList.add("cur");
+  }
+}
+function resultsVisible(){ return !resultsCard.classList.contains("hide"); }
+
+function counts(){
+  let done=0, right=0;
+  for(let i=0;i<N;i++){
+    if(answers[i]!==null){ done++; if(answers[i]===QUESTIONS[i].a) right++; }
+  }
+  return {done,right};
+}
+function paintScore(){
+  const {done,right} = counts();
+  document.getElementById("sc-done").textContent = done;
+  document.getElementById("sc-right").textContent = right;
+}
+
+function render(){
+  resultsCard.classList.add("hide");
+  qcard.classList.remove("hide");
+  const Q = QUESTIONS[idx];
+  const picked = answers[idx];
+  let html = "";
+  html += '<div class="meta"><span class="qnum">QUESTION ' + (idx+1) + ' / ' + N + '</span><span class="chip">' + Q.c + '</span></div>';
+  html += '<p class="stem">' + Q.q + '</p>';
+  Q.o.forEach((opt,i)=>{
+    let cls = "opt";
+    if(picked !== null){
+      if(i === picked && picked === Q.a) cls += " sel-ok";
+      else if(i === picked) cls += " sel-bad";
+      else if(i === Q.a) cls += " reveal-ok";
+    }
+    html += '<button class="'+cls+'" data-i="'+i+'" '+(picked!==null?"disabled":"")+'><span class="ltr">'+LETTERS[i]+'</span><span>'+opt+'</span></button>';
+  });
+  if(picked !== null){
+    const good = picked === Q.a;
+    html += '<div class="verdict '+(good?"ok":"bad")+'">'+(good ? "Correct" : "Incorrect — answer is " + LETTERS[Q.a])+'</div>';
+    html += '<div class="rationale">'+Q.r+'</div>';
+  }
+  html += '<div class="nav">';
+  html += '<button class="btn ghost" id="prevBtn" '+(idx===0?"disabled":"")+'>Back</button>';
+  if(idx < N-1){
+    html += '<button class="btn" id="nextBtn">Next question</button>';
+  } else {
+    html += '<button class="btn" id="finishBtn">See results</button>';
+  }
+  html += '</div>';
+  qcard.innerHTML = html;
+
+  qcard.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      if(answers[idx] !== null) return;
+      answers[idx] = parseInt(btn.dataset.i,10);
+      render();
+    });
+  });
+  const prev = document.getElementById("prevBtn");
+  if(prev) prev.addEventListener("click", ()=>{ idx--; render(); });
+  const next = document.getElementById("nextBtn");
+  if(next) next.addEventListener("click", ()=>{ idx++; render(); });
+  const fin = document.getElementById("finishBtn");
+  if(fin) fin.addEventListener("click", showResults);
+  paintStrip(); paintScore();
+}
+
+function showResults(){
+  const {done,right} = counts();
+  const pct = done ? Math.round((right/done)*100) : 0;
+  // category breakdown
+  const cats = {};
+  QUESTIONS.forEach((Q,i)=>{
+    if(!cats[Q.c]) cats[Q.c] = {n:0, ok:0, ans:0};
+    cats[Q.c].n++;
+    if(answers[i]!==null){ cats[Q.c].ans++; if(answers[i]===Q.a) cats[Q.c].ok++; }
+  });
+  let html = '<div class="bigscore">'+right+' / '+done+' ('+pct+'%)</div>';
+  html += '<p class="sub">'+(done<N ? (N-done)+' question'+(N-done===1?"":"s")+' unanswered — they are not counted against you. ' : '')+'A passing pace on the real ANCC is roughly the low-to-mid 70s percent range, so use this as a directional gauge, not a verdict.</p>';
+  html += '<h2 style="font-size:.95rem;margin-bottom:6px">By category</h2>';
+  Object.keys(cats).forEach(c=>{
+    const o = cats[c];
+    const p = o.ans ? Math.round((o.ok/o.ans)*100) : 0;
+    html += '<div class="catrow"><span style="flex:0 0 44%">'+c+'</span><span class="bar"><i style="width:'+(o.ans? p:0)+'%"></i></span><span style="font-family:var(--mono);font-size:.8rem">'+o.ok+'/'+o.ans+(o.ans<o.n?' of '+o.n:'')+'</span></div>';
+  });
+  // missed list
+  const missed = [];
+  for(let i=0;i<N;i++) if(answers[i]!==null && answers[i]!==QUESTIONS[i].a) missed.push(i);
+  if(missed.length){
+    html += '<div class="missedlist"><h2 style="font-size:.95rem;margin-bottom:8px">Review missed questions</h2>';
+    missed.forEach(i=>{ html += '<button data-jump="'+i+'">Q'+(i+1)+'</button>'; });
+    html += '</div>';
+  }
+  html += '<div class="nav"><button class="btn ghost" id="backBtn">Back to questions</button><button class="btn" id="resetBtn">Start over</button></div>';
+  resultsCard.innerHTML = html;
+  resultsCard.classList.remove("hide");
+  qcard.classList.add("hide");
+  resultsCard.querySelectorAll("[data-jump]").forEach(b=>{
+    b.addEventListener("click", ()=>{ idx = parseInt(b.dataset.jump,10); render(); });
+  });
+  document.getElementById("backBtn").addEventListener("click", ()=>{ render(); });
+  document.getElementById("resetBtn").addEventListener("click", ()=>{
+    if(confirm("Clear all answers and start over?")){
+      answers = new Array(N).fill(null); idx = 0; render();
+    }
+  });
+  paintStrip(); paintScore();
+}
+
+buildStrip();
+render();
+</script>
+</body>
+</html>

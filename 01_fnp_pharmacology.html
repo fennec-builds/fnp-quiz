@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1. FNP Pharmacology — 50 Questions</title>
+<style>
+  :root{
+    --bg:#F2F5F7; --card:#FFFFFF; --ink:#14283A; --muted:#5B6B7A;
+    --teal:#0E7C86; --teal-dk:#0A5A62; --line:#DEE6EB;
+    --ok:#1F7A4D; --ok-bg:#E6F4EC; --bad:#B3362E; --bad-bg:#FBEAE8;
+    --mono:"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Avenir Next","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    line-height:1.55; padding:20px 14px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  h1{font-size:1.15rem;font-weight:700;letter-spacing:.01em}
+  h1 span{color:var(--teal)}
+  .score{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+  .score b{color:var(--ink)}
+  /* telemetry strip */
+  .striplabel{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--muted);margin:14px 0 5px}
+  .strip{display:flex;gap:2px;flex-wrap:nowrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .tick{flex:1;height:16px;background:#E2E9EE;border-radius:2px;cursor:pointer;transition:height .15s}
+  .tick.ok{background:var(--ok)} .tick.bad{background:var(--bad)}
+  .tick.cur{height:24px;outline:2px solid var(--teal);outline-offset:1px}
+  /* card */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;margin-top:18px;box-shadow:0 1px 3px rgba(20,40,58,.06)}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+  .qnum{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+  .chip{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-dk);background:#E3F1F2;border-radius:999px;padding:3px 10px}
+  .stem{font-size:1.02rem;margin-bottom:18px}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+    background:#FAFCFD;border:1.5px solid var(--line);border-radius:10px;
+    padding:13px 14px;margin-bottom:9px;cursor:pointer;font:inherit;color:inherit;
+    transition:border-color .12s, background .12s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--teal)}
+  .opt:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+  .opt:disabled{cursor:default}
+  .opt .ltr{font-family:var(--mono);font-weight:700;color:var(--muted);flex:0 0 auto}
+  .opt.sel-ok{border-color:var(--ok);background:var(--ok-bg)}
+  .opt.sel-bad{border-color:var(--bad);background:var(--bad-bg)}
+  .opt.reveal-ok{border-color:var(--ok);background:var(--ok-bg)}
+  .verdict{font-weight:700;margin:10px 0 6px}
+  .verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+  .rationale{background:#F4F8FA;border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:13px 15px;font-size:.93rem;margin-top:4px}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+  .btn{
+    font:inherit;font-weight:600;border:none;border-radius:10px;padding:11px 20px;cursor:pointer;
+    background:var(--teal);color:#fff;transition:background .12s;
+  }
+  .btn:hover{background:var(--teal-dk)}
+  .btn:disabled{background:#C4D0D8;cursor:default}
+  .btn.ghost{background:transparent;color:var(--teal);border:1.5px solid var(--teal)}
+  .btn.ghost:hover{background:#E3F1F2}
+  .btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+  /* results */
+  .bigscore{font-family:var(--mono);font-size:2.6rem;font-weight:700;color:var(--teal-dk)}
+  .sub{color:var(--muted);margin-bottom:18px}
+  .catrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+  .bar{flex:1;height:8px;background:#E2E9EE;border-radius:99px;overflow:hidden;margin:0 12px}
+  .bar i{display:block;height:100%;background:var(--teal)}
+  .missedlist{margin-top:16px}
+  .missedlist button{
+    font-family:var(--mono);font-size:.8rem;background:var(--bad-bg);color:var(--bad);
+    border:1px solid #E8C2BE;border-radius:8px;padding:6px 10px;margin:0 6px 6px 0;cursor:pointer;
+  }
+  .hide{display:none}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+  @media (max-width:480px){ .card{padding:16px} .strip{gap:1px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>1. FNP Pharmacology <span>· 50 Items</span></h1>
+    <div class="score" id="scorebox">Answered <b id="sc-done">0</b>/50 &nbsp;·&nbsp; Correct <b id="sc-right">0</b></div>
+  </header>
+  <div class="striplabel">PROGRESS STRIP — GREEN CORRECT / RED MISSED — TAP A TICK TO JUMP</div>
+  <div class="strip" id="strip" aria-label="question progress"></div>
+
+  <div class="card" id="qcard"></div>
+
+  <div class="card hide" id="results"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+{c:"Pharm - ACE Inhibitors/ARBs",q:"A patient on lisinopril for hypertension develops a persistent dry cough. Which mechanism best explains this side effect?",o:["Increased bradykinin levels due to ACE inhibition","Direct bronchospasm from the drug","Angiotensin II receptor stimulation","Fluid retention causing postnasal drip"],a:0,r:"ACE inhibitors block the breakdown of bradykinin, causing it to accumulate in the lungs. Bradykinin stimulates airway sensory nerves and produces a dry, persistent cough in 10-15% of patients. The fix: switch to an ARB (like losartan), which does not affect bradykinin metabolism and does not cause cough."},
+{c:"Pharm - ACE Inhibitors/ARBs",q:"A 45-year-old develops sudden facial and lip swelling 3 weeks after starting lisinopril. No hives, lungs clear. Most appropriate next step?",o:["Give diphenhydramine and continue lisinopril","Discontinue lisinopril immediately — this is angioedema","Decrease the dose and monitor","Switch to a beta-blocker"],a:1,r:"ACE inhibitor-induced angioedema is bradykinin-mediated (not IgE-mediated), so antihistamines and steroids are often ineffective. It can progress to airway compromise and is potentially fatal. Discontinue immediately and NEVER rechallenge with any ACE inhibitor. ARBs are an alternative, though rarely they too can cause angioedema."},
+{c:"Pharm - Diabetes Medications",q:"Which class of diabetes medication directly stimulates insulin secretion regardless of blood glucose level, making hypoglycemia a significant risk even when fasting?",o:["Metformin","Sulfonylureas","SGLT-2 inhibitors","GLP-1 receptor agonists"],a:1,r:"Sulfonylureas (glipizide, glimepiride, glyburide) close ATP-sensitive potassium channels on beta cells, triggering insulin release independently of glucose — hence the hypoglycemia risk. GLP-1 agonists stimulate insulin in a glucose-DEPENDENT manner (no release when glucose is normal), so they carry far lower hypoglycemia risk. Metformin and SGLT-2i don't directly stimulate insulin."},
+{c:"Pharm - Diabetes Medications",q:"A patient started on empagliflozin (SGLT-2 inhibitor) requires specific counseling about which side effect?",o:["Hypoglycemia when fasting","Photosensitivity reactions","Genital mycotic infections and UTIs","Peripheral edema"],a:2,r:"SGLT-2 inhibitors cause glucosuria (glucose in urine). That glucose-rich environment promotes yeast and bacterial growth, causing mycotic infections and UTIs — particularly in women. Also counsel about euglycemic DKA (rare but serious), volume depletion, and holding the drug before surgery. The cardiovascular and renal benefits are significant reasons to use this class."},
+{c:"Pharm - Diabetes Medications",q:"A patient on semaglutide (GLP-1 agonist) reports severe abdominal pain radiating to the back with nausea and vomiting. Most important next step?",o:["Reassure — nausea is expected with GLP-1 agents","Reduce the dose","Stop the medication and evaluate for pancreatitis","Switch to a DPP-4 inhibitor"],a:2,r:"GLP-1 receptor agonists carry a risk of acute pancreatitis. Severe epigastric or abdominal pain radiating to the back is a red flag — stop the drug and evaluate with lipase/amylase. Do not rechallenge if pancreatitis is confirmed. GLP-1 agents are also contraindicated with personal or family history of medullary thyroid carcinoma due to thyroid C-cell tumor signal in animal studies."},
+{c:"Pharm - Lipid-Lowering",q:"A patient on atorvastatin reports muscle aches. CK comes back at 12,000 U/L. Best action?",o:["Continue atorvastatin and recheck CK in 4 weeks","Reduce the dose by half","Discontinue the statin immediately and check renal function","Switch to rosuvastatin"],a:2,r:"CK greater than 10 times the upper limit of normal with muscle symptoms indicates rhabdomyolysis. Rhabdo releases myoglobin that is toxic to the kidneys. Stop the statin immediately, ensure good hydration, and monitor renal function. CK 3-10x ULN with symptoms: hold and re-evaluate. Mild aches without significant CK elevation: often continue and monitor."},
+{c:"Pharm - Antibiotics",q:"Which antibiotic class carries an FDA black box warning for tendon rupture (especially Achilles), and is contraindicated in patients under 18 and pregnant women?",o:["Macrolides","Fluoroquinolones","Tetracyclines","Aminoglycosides"],a:1,r:"Fluoroquinolones (ciprofloxacin, levofloxacin, moxifloxacin) carry a black box warning for tendinitis and tendon rupture. Risk is highest in patients over 60, those on corticosteroids, and kidney transplant recipients. Contraindicated in children under 18 (cartilage damage in animal models) and in pregnancy. Tetracyclines cause teeth discoloration in children under 8 and are avoided in pregnancy; aminoglycosides cause nephrotoxicity and ototoxicity."},
+{c:"Pharm - Antibiotics",q:"A patient on warfarin is started on metronidazole for bacterial vaginosis. Which monitoring change is most important?",o:["No change needed — metronidazole doesn't affect warfarin","Increase the warfarin dose to account for enzyme induction","Monitor INR closely — metronidazole inhibits warfarin metabolism and increases bleeding risk","Switch to fluconazole instead"],a:2,r:"Metronidazole inhibits CYP2C9, the enzyme that metabolizes warfarin's active S-enantiomer. This significantly increases warfarin levels and bleeding risk. INR should be checked within a few days of starting. This interaction also applies to azole antifungals (fluconazole). Broad-spectrum antibiotics can also raise INR by killing gut flora that produce vitamin K."},
+{c:"Pharm - Antibiotics",q:"Isoniazid (INH) for latent TB MUST be co-prescribed with which supplement to prevent a serious adverse effect?",o:["Vitamin C","Vitamin B12","Pyridoxine (Vitamin B6)","Folic acid"],a:2,r:"INH competitively inhibits pyridoxine (B6) metabolism, causing peripheral neuropathy — particularly in malnourished patients, pregnant women, and those with diabetes. Pyridoxine 25-50 mg daily is co-prescribed to prevent this. INH also inhibits CYP450 (drug interactions) and can cause hepatotoxicity — baseline LFTs and monitoring are recommended."},
+{c:"Pharm - Cardiac Medications",q:"A patient with AF has digoxin level 2.8 ng/mL with nausea, yellow-green visual changes, bradycardia, and K+ of 2.9 mEq/L. What best explains the toxicity?",o:["High dose is the only factor","Hypokalemia potentiates digoxin toxicity by increasing binding to Na/K-ATPase","Hyperkalemia triggered the toxicity","The visual changes are unrelated to digoxin"],a:1,r:"Digoxin's therapeutic window is narrow (0.5-2.0 ng/mL). Hypokalemia potentiates toxicity because potassium and digoxin compete for the same binding site on Na/K-ATPase — when potassium is low, digoxin binds more avidly. Classic toxicity: bradyarrhythmias, nausea/vomiting, and yellow-green halos around lights (xanthopsia). Treat by correcting potassium, holding digoxin, and using digoxin-immune Fab (Digibind) for severe toxicity."},
+{c:"Pharm - Cardiac Medications",q:"Which antiarrhythmic drug causes the most drug interactions due to CYP enzyme inhibition and requires monitoring for thyroid, pulmonary, and hepatic toxicity?",o:["Metoprolol","Amiodarone","Diltiazem","Flecainide"],a:1,r:"Amiodarone inhibits CYP2C9, CYP2D6, and CYP3A4 — raising levels of warfarin, digoxin, statins, and many others. It contains 37% iodine by weight and causes hypo- OR hyperthyroidism. Pulmonary toxicity (fibrosis) can be fatal. Corneal microdeposits are nearly universal. Slate-gray skin discoloration with sun exposure. Baseline and periodic TFTs, LFTs, PFTs, and eye exam required."},
+{c:"Pharm - Cardiac Medications",q:"A patient with erectile dysfunction uses sildenafil and is having chest pain. EMS is en route. Which medication is absolutely contraindicated right now?",o:["Aspirin","Metoprolol","Nitroglycerin","Morphine"],a:2,r:"PDE5 inhibitors (sildenafil, tadalafil) and nitrates both cause vasodilation via the nitric oxide pathway. Combining them causes profound, potentially fatal hypotension. Absolute contraindication — nitroglycerin is contraindicated within 24 hours of sildenafil (48 hours for tadalafil). Aspirin and beta-blockers are safe and indicated in ACS. This is a classic board-tested drug interaction."},
+{c:"Pharm - Anticoagulants",q:"A patient on warfarin for AF has INR of 5.8 but no active bleeding. Best management?",o:["Continue current dose and recheck in 1 week","Hold 1-2 doses, give vitamin K 2.5 mg orally, recheck INR in 24 hours","Give fresh frozen plasma immediately","Start heparin bridge therapy"],a:1,r:"For supratherapeutic INR (>5) without active bleeding: hold warfarin, give a LOW oral dose of vitamin K (1-2.5 mg) to bring INR back into range without over-correcting, and recheck. IV vitamin K reversal is too fast and can make the patient warfarin-resistant for weeks. FFP and 4-factor PCC are for active major bleeding. The goal is gentle correction, not emergency reversal."},
+{c:"Pharm - Anticoagulants",q:"Which DOAC is 80% renally cleared and requires the most careful dose adjustment in chronic kidney disease?",o:["Apixaban (Eliquis)","Rivaroxaban (Xarelto)","Dabigatran (Pradaxa)","Edoxaban"],a:2,r:"Dabigatran is 80% renally cleared — the highest of all DOACs. Contraindicated below eGFR 15 and requires dose reduction at lower GFR values. Apixaban has the least renal clearance (~27%) and is often preferred in CKD. Idarucizumab (Praxbind) reverses dabigatran specifically; andexanet alfa reverses apixaban and rivaroxaban."},
+{c:"Pharm - Respiratory Medications",q:"A patient with moderate persistent asthma is already on a low-dose inhaled corticosteroid. Per GINA guidelines, the preferred step-up is:",o:["Add an oral corticosteroid","Add a long-acting beta-agonist (LABA) to the ICS","Switch to a short-acting beta-agonist only","Add theophylline"],a:1,r:"Key safety point: LABAs must NEVER be used as monotherapy in asthma (black box warning — increased asthma-related deaths). They are always combined with an ICS. The most effective step-up from low-dose ICS is adding a LABA (ICS-LABA combo). Oral corticosteroids are for acute exacerbations. Theophylline has a narrow therapeutic window and significant side effects — rarely used now."},
+{c:"Pharm - Psychiatric Medications",q:"A patient is started on bupropion for depression. Which is the most important contraindication to screen for before prescribing?",o:["Hypertension","Seizure disorder or eating disorders (anorexia/bulimia)","Hypothyroidism","Chronic kidney disease"],a:1,r:"Bupropion lowers the seizure threshold — contraindicated in seizure disorder, current or prior anorexia/bulimia (electrolyte imbalances raise seizure risk), and in patients abruptly stopping alcohol or benzodiazepines. Cannot be used with MAOIs. On the positive side, bupropion does NOT cause sexual dysfunction (unique among antidepressants) and is FDA-approved for smoking cessation (Zyban)."},
+{c:"Pharm - Psychiatric Medications",q:"A 32-year-old bipolar patient stable on lithium develops tremor, confusion, and diarrhea after starting ibuprofen for back pain. Most likely explanation?",o:["Ibuprofen allergy","Lithium toxicity — NSAIDs reduce renal lithium clearance, raising levels","Serotonin syndrome","Bipolar mixed episode"],a:1,r:"NSAIDs reduce renal prostaglandin synthesis, causing sodium retention. Because lithium follows sodium handling in the kidney, decreased sodium excretion means increased lithium reabsorption — levels rise. Toxicity signs: coarse tremor, confusion, GI upset, ataxia, and in severe cases seizures and coma. Therapeutic range is narrow: 0.8-1.2 mEq/L. Counsel all lithium patients to avoid NSAIDs and dehydration."},
+{c:"Pharm - Psychiatric Medications",q:"A patient taking phenelzine (an MAOI) asks about food safety. Which poses the greatest risk for a hypertensive crisis?",o:["Grilled chicken","Fresh fruit salad","Aged cheese and red wine","White rice"],a:2,r:"MAOIs block monoamine oxidase, the enzyme that breaks down tyramine in the gut. Eating tyramine-rich foods (aged cheeses, cured meats, fermented products, red wine, draft beer, fava beans, sauerkraut) causes massive norepinephrine release — potentially fatal hypertensive crisis with headache, sweating, and stroke risk. Fresh foods and white rice are safe. MAOIs also cannot combine with SSRIs, SNRIs, meperidine, or tramadol."},
+{c:"Pharm - Pain Management",q:"Which opioid is considered safest in severe renal impairment because it has no active metabolites that accumulate?",o:["Morphine","Codeine","Hydromorphone","Fentanyl"],a:3,r:"Fentanyl metabolizes to inactive compounds — safest in renal failure. Morphine's active metabolite morphine-6-glucuronide accumulates in renal failure, causing prolonged effect and respiratory depression. Codeine requires CYP2D6 conversion to morphine — ultra-rapid metabolizers risk fatal respiratory depression (FDA black box in children). Hydromorphone also accumulates in renal failure."},
+{c:"Pharm - Rheumatologic Medications",q:"A patient on methotrexate for rheumatoid arthritis must always be co-prescribed:",o:["Calcium and vitamin D","Folic acid","Vitamin B12","Iron supplements"],a:1,r:"Methotrexate is a folate antagonist — it blocks dihydrofolate reductase. Folic acid 1 mg daily reduces GI side effects, mucositis, and hematologic toxicity without significantly reducing anti-inflammatory efficacy. Also monitor CBC (bone marrow suppression) and LFTs (hepatotoxicity). Methotrexate is teratogenic (Category X) — effective contraception required."},
+{c:"Pharm - Rheumatologic Medications",q:"A patient on hydroxychloroquine (Plaquenil) for lupus requires which specific monitoring?",o:["Annual renal function panel","Annual comprehensive ophthalmologic exam","Monthly CBC","Semi-annual pulmonary function tests"],a:1,r:"Hydroxychloroquine can cause retinal toxicity (bull's-eye maculopathy) that is irreversible if not caught early. Baseline ophthalmologic exam within the first year, then annually after 5 years (sooner if risk factors). It is one of the safest DMARDs overall and is safe in pregnancy. Does NOT require routine CBC or pulmonary monitoring."},
+{c:"Pharm - Bone Medications",q:"A patient starts alendronate for osteoporosis. Which instruction is MOST critical to prevent esophageal injury?",o:["Take with a full glass of milk for calcium co-absorption","Take at bedtime to improve absorption","Take on an empty stomach with 8 oz of water and remain upright for 30 minutes","Take with food to reduce GI upset"],a:2,r:"Bisphosphonates are highly irritating to the esophagus — taken on an EMPTY stomach with a FULL glass of plain water, and the patient MUST REMAIN UPRIGHT (sitting or standing) for at least 30 minutes to prevent esophageal ulceration and stricture. Contraindicated in esophageal disorders and if unable to remain upright. Also contraindicated in CrCl < 30 mL/min."},
+{c:"Pharm - Thyroid Medications",q:"A patient on levothyroxine has persistent hypothyroid symptoms despite dose increases. She takes her pill every morning with coffee and a calcium supplement. What is most likely affecting her levels?",o:["Her hypothyroidism is treatment-resistant","Calcium and coffee impair levothyroxine absorption","She needs to switch to liothyronine (T3)","Her dose is too high, causing suppression"],a:1,r:"Levothyroxine absorption is significantly reduced by calcium supplements, antacids, iron supplements, coffee, and high-fiber foods taken simultaneously. It should be taken on an EMPTY stomach, 30-60 minutes before food, and at least 4 hours apart from calcium, iron, or antacids. Interactions also with cholestyramine, sucralfate, and PPIs. This is a board-classic absorption question."},
+{c:"Pharm - Thyroid Medications",q:"In the first trimester of pregnancy, which antithyroid drug is preferred over methimazole?",o:["Propylthiouracil (PTU)","Levothyroxine","Radioactive iodine","Propranolol"],a:0,r:"PTU is preferred in the FIRST TRIMESTER because methimazole is associated with embryopathy (choanal atresia, aplasia cutis). After the first trimester, methimazole is often preferred because PTU carries higher risk of severe hepatotoxicity. Radioactive iodine is absolutely contraindicated in pregnancy. Propranolol may be used short-term for symptom control only."},
+{c:"Pharm - Dermatologic Medications",q:"A 20-year-old female with severe cystic acne is prescribed isotretinoin. Before prescribing, what is REQUIRED?",o:["A urine drug screen","Enrollment in iPLEDGE program with two forms of contraception and negative pregnancy tests","A baseline echocardiogram","Written consent from a parent only"],a:1,r:"Isotretinoin is a potent teratogen (Category X) causing severe fetal abnormalities. iPLEDGE REMS program requires: two forms of contraception for at least one month before, during, and one month after treatment; monthly negative pregnancy tests before dispensing; monthly physician visits; patient counseling; and pharmacist/prescriber enrollment."},
+{c:"Pharm - Contraception",q:"Which contraceptive method has the highest failure rate with TYPICAL use?",o:["Implant (Nexplanon)","Hormonal IUD","Male condom","Copper IUD"],a:2,r:"With TYPICAL use, male condoms have approximately 13-18% failure rate per year. The implant and IUDs (hormonal and copper) have less than 1% failure rates — the most effective reversible contraceptives. 'Perfect use' vs 'typical use' differs significantly for user-dependent methods (pills, condoms, patches) but minimally for set-and-forget methods (implants, IUDs). The ANCC loves to test this distinction."},
+{c:"Pharm - Contraception",q:"A 28-year-old is 72 hours post-unprotected intercourse and wants emergency contraception. Which option is MOST effective?",o:["Plan B (levonorgestrel) OTC","Ella (ulipristal acetate)","Copper IUD insertion","Yuzpe regimen (combined OCPs)"],a:2,r:"The copper IUD is the most effective emergency contraception up to 5 days (120 hours) after unprotected intercourse — over 99% effective. Levonorgestrel (Plan B) is most effective within 72 hours. Ulipristal (Ella) works up to 120 hours and outperforms levonorgestrel later in the window. The copper IUD then continues as ongoing contraception — a two-for-one benefit."},
+{c:"Pharm - GI Medications",q:"A 65-year-old on long-term omeprazole has magnesium of 1.1 mEq/L with muscle cramps and fatigue. Best management?",o:["Magnesium supplementation alone will correct this permanently","Discontinue or reduce PPI; switch to H2 blocker if needed; replace magnesium","Increase PPI dose — hypomagnesemia is unrelated","Start calcium supplementation instead"],a:1,r:"Long-term PPI use (typically >1 year) can cause hypomagnesemia by impairing gut absorption. Supplementation alone will not correct it while the PPI continues — the definitive treatment is stopping or reducing the PPI, switching to an H2 blocker if needed. Other long-term PPI concerns: C. diff risk, B12 deficiency, hip fracture risk, and community-acquired pneumonia."},
+{c:"Pharm - Antimicrobials",q:"A patient has confirmed C. difficile colitis, first episode, mild-moderate symptoms. Best treatment per updated IDSA guidelines?",o:["Metronidazole IV","Oral vancomycin or fidaxomicin","Oral metronidazole","Immediate surgical consult"],a:1,r:"Updated IDSA guidelines recommend oral vancomycin or fidaxomicin as first-line for ALL C. diff infections, including initial mild-moderate episodes. Metronidazole is no longer first line due to inferior cure rates and higher recurrence. Fidaxomicin has the lowest recurrence rates. IV metronidazole is only used when oral administration is impossible."},
+{c:"Pharm - Antimicrobials",q:"A TB patient on RIPE therapy uses oral contraceptives. What counseling is needed regarding rifampin?",o:["No change needed","Rifampin induces CYP450 and significantly reduces OCP effectiveness — add barrier contraception","Stop OCPs and switch to medroxyprogesterone injection","Rifampin and OCPs are safe to combine at any dose"],a:1,r:"Rifampin is one of the most potent CYP450 enzyme inducers known. It dramatically increases metabolism of ethinyl estradiol and progestins, reducing OCP plasma levels by up to 40-60% — significantly increasing contraceptive failure risk. Counsel patients to use a barrier method for the duration of TB treatment AND one month after completing rifampin. Also: rifampin turns urine, tears, and sweat orange-red."},
+{c:"Pharm - Neurologic Medications",q:"Which antiepileptic has ZERO-ORDER kinetics at higher doses, meaning small dose increases can cause disproportionately large rises in blood levels?",o:["Levetiracetam (Keppra)","Lamotrigine","Phenytoin","Valproate"],a:2,r:"Phenytoin has zero-order (saturable) kinetics at therapeutic doses — the metabolizing enzyme becomes saturated, so even small dose increases can cause levels to skyrocket. Toxicity signs: nystagmus (first sign), ataxia, diplopia, confusion. Other pearls: causes gingival hyperplasia, hirsutism, teratogenicity (fetal hydantoin syndrome), induces CYP450. Levetiracetam and lamotrigine have linear (first-order) kinetics — safer to dose-adjust."},
+{c:"Pharm - Neurologic Medications",q:"A patient on valproate for bipolar disorder becomes pregnant. What is the most serious fetal risk?",o:["Cleft palate only","Neural tube defects (spina bifida) — risk approximately 1-2%","Cardiac septal defects","Neonatal withdrawal syndrome only"],a:1,r:"Valproate is one of the most teratogenic anticonvulsants — neural tube defects in 1-2% of exposed pregnancies. Also causes cognitive impairment (autism spectrum risk, lower IQ) and other congenital anomalies. Requires a REMS program. High-dose folic acid (4-5 mg) recommended for women of childbearing age who require it. Lamotrigine has the best pregnancy safety profile among mood stabilizers."},
+{c:"Pharm - Neurologic Medications",q:"A patient prescribed sumatriptan for acute migraine is also on phenelzine (MAOI). Why is this combination contraindicated?",o:["Beta-blocker interaction reduces sumatriptan effect","MAOIs markedly increase triptan levels, risking serotonin syndrome","Triptans lower seizure threshold when combined with MAOIs","MAOIs increase migraine frequency"],a:1,r:"Triptans are metabolized by MAO-A. Co-administration with MAOIs markedly increases triptan levels, risking serotonin syndrome. Absolute contraindication — wait at least 2 weeks after stopping an MAOI before using a triptan. Beta-blockers are actually USED for migraine prophylaxis and are fine with acute triptans. Metoclopramide is used as an adjunct for migraine-associated nausea."},
+{c:"Pharm - Diuretics",q:"A heart failure patient on furosemide has K+ of 3.0 mEq/L and is also on digoxin. Why is this combination especially dangerous?",o:["Furosemide directly blocks digoxin clearance","Hypokalemia increases digoxin binding to Na/K-ATPase, amplifying toxicity risk","Digoxin causes potassium wasting additive with furosemide","They compete for the same renal excretion pathway"],a:1,r:"Loop diuretics cause potassium wasting. Potassium and digoxin compete for the same binding site on Na/K-ATPase — when potassium is low, digoxin binds more tightly, amplifying its effect and arrhythmia risk. Management: potassium repletion, consider adding a potassium-sparing diuretic (spironolactone), and monitor digoxin levels. Classic, heavily-tested interaction."},
+{c:"Pharm - Diuretics",q:"Which diuretic is potassium-SPARING and specifically beneficial in HFrEF due to anti-aldosterone effects proven to reduce mortality?",o:["Furosemide","Hydrochlorothiazide","Spironolactone","Chlorthalidone"],a:2,r:"Spironolactone (and eplerenone) are aldosterone antagonists — they reduce sodium retention and potassium excretion. In HFrEF, they reduce mortality and hospitalizations (RALES trial). Key side effects: hyperkalemia (avoid if K+ > 5.0 or eGFR <30) and gynecomastia (due to anti-androgen effect — less with eplerenone). Monitor potassium and renal function after starting."},
+{c:"Pharm - Drug Interactions",q:"A patient taking clopidogrel for a coronary stent wants to start a PPI for heartburn. Best recommendation?",o:["Omeprazole is the best PPI to use with clopidogrel","Avoid omeprazole and esomeprazole — they inhibit CYP2C19 and reduce clopidogrel's antiplatelet effect; use pantoprazole instead","Any PPI is safe with clopidogrel","Avoid all PPIs and use antacids only"],a:1,r:"Clopidogrel is a prodrug requiring CYP2C19 activation. Omeprazole and esomeprazole inhibit CYP2C19, reducing clopidogrel activation and raising stent thrombosis risk. Pantoprazole and rabeprazole have minimal CYP2C19 inhibition and are the preferred PPIs with clopidogrel. One of the most clinically important PPI drug interactions on board exams."},
+{c:"Pharm - Drug Interactions",q:"A patient on atorvastatin is prescribed clarithromycin for H. pylori. What is the key risk?",o:["Reduced clarithromycin effectiveness","Clarithromycin inhibits CYP3A4, raising statin levels and increasing rhabdomyolysis risk","No clinically significant interaction","Reduced statin levels due to enzyme induction"],a:1,r:"Clarithromycin is a potent CYP3A4 inhibitor. Statins metabolized by CYP3A4 (atorvastatin, simvastatin, lovastatin) accumulate to toxic levels, significantly increasing rhabdomyolysis risk. Options: temporarily hold the statin during clarithromycin, or switch to a statin NOT CYP3A4-dependent (rosuvastatin, pravastatin). This interaction also applies to azole antifungals, diltiazem, and HIV protease inhibitors."},
+{c:"Pharm - Vaccines",q:"Which vaccine is contraindicated in an HIV-positive patient with CD4 count of 180 cells/mcL?",o:["Inactivated influenza (injectable)","Pneumococcal vaccine (PCV15 or PPSV23)","Hepatitis B vaccine","Varicella-zoster live vaccine (Zostavax)"],a:3,r:"Live vaccines (varicella, MMR, live attenuated intranasal flu, yellow fever, oral typhoid) are contraindicated in severely immunocompromised patients. For HIV, the threshold is generally CD4 <200 for live vaccine contraindication. This patient at 180 should NOT receive Zostavax (live). However, Shingrix (recombinant, NOT live) IS recommended for HIV patients. Inactivated vaccines (flu shot, pneumococcal, Hep B) are safe and recommended."},
+{c:"Pharm - Controlled Substances",q:"A patient has been on hydrocodone/APAP (Schedule II) for 3 months. Which DEA regulation is correct?",o:["Schedule II prescriptions can be called into the pharmacy by phone in most situations","A new written or electronic prescription is required for each supply; refills are NOT permitted","30-day refills can be authorized verbally for established patients","Schedule II prescriptions may be faxed without restriction"],a:1,r:"Schedule II substances (morphine, oxycodone, hydrocodone, fentanyl, amphetamines) CANNOT be refilled — a new prescription is required every time. They cannot be phoned in except in specific emergencies. Electronic prescribing of controlled substances (EPCS) is now permitted and increasingly required. Schedule III-IV medications can be refilled up to 5 times in 6 months."},
+{c:"Pharm - Smoking Cessation",q:"Which smoking cessation medication has the highest abstinence rates but requires monitoring for neuropsychiatric side effects?",o:["Nicotine replacement therapy (patch)","Bupropion (Zyban)","Varenicline (Chantix)","Nortriptyline"],a:2,r:"Varenicline is a partial nicotinic acetylcholine receptor agonist — reduces cravings (partial agonist) and blocks nicotine's rewarding effects (antagonist). Highest 12-week abstinence rates of any single agent. FDA black box warning for neuropsychiatric side effects (depression, suicidal ideation) was partially removed after further evidence, but monitoring is still warranted — especially with psychiatric history."},
+{c:"Pharm - Substance Use",q:"Disulfiram (Antabuse) works by which mechanism, and what happens if the patient drinks alcohol?",o:["Blocks opioid receptors, reducing alcohol's rewarding effects","Inhibits aldehyde dehydrogenase, causing acetaldehyde buildup and a severe aversive reaction","Reduces GABA activity, decreasing alcohol dependence","Acts as a partial alcohol receptor agonist"],a:1,r:"Disulfiram blocks aldehyde dehydrogenase — when alcohol is consumed, toxic acetaldehyde accumulates causing flushing, nausea, vomiting, tachycardia, and hypotension. Patients must avoid ALL alcohol-containing products (mouthwash, cough syrups, sauces). Naltrexone (opioid receptor blockade) and acamprosate (modulates glutamate/GABA) are alternatives without the aversive mechanism."},
+{c:"Pharm - Geriatric Pharmacology",q:"Per the Beers Criteria, which medication should be AVOIDED in older adults due to strong anticholinergic properties causing confusion, urinary retention, and fall risk?",o:["Metformin","Lisinopril","Diphenhydramine (Benadryl)","Levothyroxine"],a:2,r:"Diphenhydramine (found in Benadryl, ZzzQuil, and many OTC sleep/allergy products) is highly anticholinergic and is on the Beers Criteria. Effects in elderly: confusion, delirium, urinary retention, constipation, dry mouth, blurred vision, and falls. Other Beers anticholinergics: first-generation antihistamines, TCAs, oxybutynin, muscle relaxants. Counsel patients to avoid OTC sleep aids containing diphenhydramine."},
+{c:"Pharm - Geriatric Pharmacology",q:"An 80-year-old on zolpidem for 6 weeks now reports she cannot sleep without it. What Beers-related concern applies?",o:["Zolpidem has no dependence potential in older adults","Zolpidem (Z-drug) is on the Beers list — risk of dependence, falls, fractures, and impaired cognition in older adults","Rebound insomnia only occurs with benzodiazepines, not Z-drugs","This is expected — continue indefinitely"],a:1,r:"Z-drugs (zolpidem, eszopiclone, zaleplon) are on the Beers Criteria — they share the same risks as benzodiazepines in older adults: falls, fractures, MVA risk, delirium, and tolerance/dependence. First-line for geriatric insomnia is CBT-I and sleep hygiene. If pharmacotherapy is needed, low-dose doxepin or melatonin are preferred. Taper zolpidem slowly to avoid withdrawal."},
+{c:"Pharm - Pregnancy/Lactation",q:"A nursing mother asks which pain reliever is safest. Best recommendation?",o:["Ibuprofen","Acetaminophen","Aspirin","Codeine"],a:1,r:"Acetaminophen is the safest analgesic during breastfeeding — minimal transfer into breast milk, short half-life, no known adverse infant effects. Ibuprofen is generally compatible but has more transfer. Aspirin is avoided due to Reye's syndrome risk in the infant. Codeine is contraindicated in breastfeeding — FDA black box warning after infant deaths in mothers who were ultra-rapid CYP2D6 metabolizers, producing toxic morphine levels in breast milk."},
+{c:"Pharm - Drug Monitoring",q:"A patient of Han Chinese ancestry is being considered for carbamazepine for seizures. Which genetic test should be ordered first?",o:["CYP2D6 genotyping","HLA-B*1502 screening","G6PD deficiency testing","TPMT enzyme activity"],a:1,r:"Carbamazepine (and phenytoin) carry significantly higher risk of Stevens-Johnson syndrome and toxic epidermal necrolysis (SJS/TEN) in patients of Han Chinese, Thai, and other Asian ancestry who carry the HLA-B*1502 allele. FDA recommends HLA-B*1502 screening before starting these drugs in patients of Asian descent. TPMT testing is for azathioprine/6-mercaptopurine; G6PD is for dapsone/primaquine."},
+{c:"Pharm - Drug Monitoring",q:"Which lab must be monitored in a patient taking clozapine due to a potentially fatal adverse effect?",o:["Serum creatinine monthly","Absolute neutrophil count (ANC) per REMS protocol","Liver function tests weekly","Serum lithium level"],a:1,r:"Clozapine carries a 1-2% risk of agranulocytosis — a potentially fatal drop in neutrophils. A strict FDA REMS program requires ANC monitoring: weekly for the first 6 months, biweekly for months 6-12, then monthly if stable. If ANC drops below 1000 cells/mcL, clozapine must be discontinued. Despite this, clozapine is the only drug with proven efficacy in treatment-resistant schizophrenia."},
+{c:"Pharm - Drug Monitoring",q:"A patient on warfarin has a new prescription for amiodarone added for AF. What should you anticipate?",o:["Warfarin levels will decrease — increase the dose","Warfarin levels will significantly increase — reduce dose by 30-50% and monitor INR closely","No interaction — different mechanisms","Amiodarone neutralizes warfarin's anticoagulation effect"],a:1,r:"Amiodarone potently inhibits CYP2C9 (warfarin's metabolizing enzyme), causing warfarin levels to rise dramatically. INR can double or triple. Reduce warfarin dose by 30-50% prophylactically when starting amiodarone and monitor INR closely and frequently. This interaction persists for months even after amiodarone is stopped (its half-life is 40-55 days). Classic heavily-tested interaction."},
+{c:"Pharm - Drug Classes",q:"A patient needs a beta-blocker for hypertension but also has asthma. Which beta-blocker, if any, is most appropriate?",o:["Propranolol (non-selective)","Carvedilol (non-selective alpha/beta)","Metoprolol succinate (cardioselective beta-1)","Beta-blockers are absolutely contraindicated in all asthma patients"],a:2,r:"Non-selective beta-blockers (propranolol, carvedilol, nadolol) block beta-2 receptors in the lungs and can precipitate bronchospasm — avoid in asthma. Cardioselective beta-1 blockers (metoprolol, atenolol, bisoprolol) have much less beta-2 activity at usual doses and are relatively safer in mild-moderate asthma when the benefit outweighs risk. 'Absolutely contraindicated' is too strong — the answer is use cardioselective with caution and monitor."},
+{c:"Pharm - Drug Classes",q:"A patient with gout has a uric acid of 9.2 mg/dL after his second flare in 6 months. You decide to start urate-lowering therapy. At what point should allopurinol be initiated?",o:["During the acute flare to rapidly lower uric acid","Immediately after the acute flare resolves, with prophylactic colchicine or NSAID cover","Only after the third flare","Urate-lowering therapy is never indicated after only two flares"],a:1,r:"Allopurinol (and febuxostat) should NEVER be started during an acute gout flare — rapid changes in uric acid levels can prolong or worsen the attack. Start 2-4 weeks AFTER the flare resolves. Co-prescribe prophylactic low-dose colchicine or NSAID for the first 3-6 months of urate-lowering therapy because mobilization of urate crystals can trigger flares. Two flares in 12 months is a clear indication to start urate-lowering therapy."}
+,
+{c:"Pharm - Drug Classes",q:"A patient with type 2 diabetes and established cardiovascular disease is being optimized. Which medication class has proven cardiovascular mortality benefit AND renal protection, making it preferred as add-on to metformin?",o:["Sulfonylureas","DPP-4 inhibitors","GLP-1 receptor agonists or SGLT-2 inhibitors","Thiazolidinediones (TZDs)"],a:2,r:"Both GLP-1 agonists (liraglutide, semaglutide) and SGLT-2 inhibitors (empagliflozin, canagliflozin) have landmark cardiovascular outcome trials showing mortality reduction in patients with established CVD. SGLT-2 inhibitors also slow progression of diabetic kidney disease. ADA guidelines prioritize these classes in T2DM with CVD or high cardiovascular risk, regardless of A1c. Sulfonylureas and DPP-4 inhibitors are glucose-neutral; TZDs cause fluid retention and worsen heart failure."}
+];
+
+const N = QUESTIONS.length;
+let idx = 0;
+let answers = new Array(N).fill(null); // selected option index
+const LETTERS = ["A","B","C","D"];
+
+const strip = document.getElementById("strip");
+const qcard = document.getElementById("qcard");
+const resultsCard = document.getElementById("results");
+
+function buildStrip(){
+  strip.innerHTML = "";
+  for(let i=0;i<N;i++){
+    const t = document.createElement("div");
+    t.className = "tick";
+    t.title = "Question " + (i+1);
+    t.addEventListener("click", ()=>{ idx = i; render(); });
+    strip.appendChild(t);
+  }
+}
+function paintStrip(){
+  const ticks = strip.children;
+  for(let i=0;i<N;i++){
+    const t = ticks[i];
+    t.className = "tick";
+    if(answers[i] !== null){
+      t.classList.add(answers[i] === QUESTIONS[i].a ? "ok" : "bad");
+    }
+    if(i === idx && !resultsVisible()) t.classList.add("cur");
+  }
+}
+function resultsVisible(){ return !resultsCard.classList.contains("hide"); }
+
+function counts(){
+  let done=0, right=0;
+  for(let i=0;i<N;i++){
+    if(answers[i]!==null){ done++; if(answers[i]===QUESTIONS[i].a) right++; }
+  }
+  return {done,right};
+}
+function paintScore(){
+  const {done,right} = counts();
+  document.getElementById("sc-done").textContent = done;
+  document.getElementById("sc-right").textContent = right;
+}
+
+function render(){
+  resultsCard.classList.add("hide");
+  qcard.classList.remove("hide");
+  const Q = QUESTIONS[idx];
+  const picked = answers[idx];
+  let html = "";
+  html += '<div class="meta"><span class="qnum">QUESTION ' + (idx+1) + ' / ' + N + '</span><span class="chip">' + Q.c + '</span></div>';
+  html += '<p class="stem">' + Q.q + '</p>';
+  Q.o.forEach((opt,i)=>{
+    let cls = "opt";
+    if(picked !== null){
+      if(i === picked && picked === Q.a) cls += " sel-ok";
+      else if(i === picked) cls += " sel-bad";
+      else if(i === Q.a) cls += " reveal-ok";
+    }
+    html += '<button class="'+cls+'" data-i="'+i+'" '+(picked!==null?"disabled":"")+'><span class="ltr">'+LETTERS[i]+'</span><span>'+opt+'</span></button>';
+  });
+  if(picked !== null){
+    const good = picked === Q.a;
+    html += '<div class="verdict '+(good?"ok":"bad")+'">'+(good ? "Correct" : "Incorrect — answer is " + LETTERS[Q.a])+'</div>';
+    html += '<div class="rationale">'+Q.r+'</div>';
+  }
+  html += '<div class="nav">';
+  html += '<button class="btn ghost" id="prevBtn" '+(idx===0?"disabled":"")+'>Back</button>';
+  if(idx < N-1){
+    html += '<button class="btn" id="nextBtn">Next question</button>';
+  } else {
+    html += '<button class="btn" id="finishBtn">See results</button>';
+  }
+  html += '</div>';
+  qcard.innerHTML = html;
+
+  qcard.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      if(answers[idx] !== null) return;
+      answers[idx] = parseInt(btn.dataset.i,10);
+      render();
+    });
+  });
+  const prev = document.getElementById("prevBtn");
+  if(prev) prev.addEventListener("click", ()=>{ idx--; render(); });
+  const next = document.getElementById("nextBtn");
+  if(next) next.addEventListener("click", ()=>{ idx++; render(); });
+  const fin = document.getElementById("finishBtn");
+  if(fin) fin.addEventListener("click", showResults);
+  paintStrip(); paintScore();
+}
+
+function showResults(){
+  const {done,right} = counts();
+  const pct = done ? Math.round((right/done)*100) : 0;
+  // category breakdown
+  const cats = {};
+  QUESTIONS.forEach((Q,i)=>{
+    if(!cats[Q.c]) cats[Q.c] = {n:0, ok:0, ans:0};
+    cats[Q.c].n++;
+    if(answers[i]!==null){ cats[Q.c].ans++; if(answers[i]===Q.a) cats[Q.c].ok++; }
+  });
+  let html = '<div class="bigscore">'+right+' / '+done+' ('+pct+'%)</div>';
+  html += '<p class="sub">'+(done<N ? (N-done)+' question'+(N-done===1?"":"s")+' unanswered — they are not counted against you. ' : '')+'A passing pace on the real ANCC is roughly the low-to-mid 70s percent range, so use this as a directional gauge, not a verdict.</p>';
+  html += '<h2 style="font-size:.95rem;margin-bottom:6px">By category</h2>';
+  Object.keys(cats).forEach(c=>{
+    const o = cats[c];
+    const p = o.ans ? Math.round((o.ok/o.ans)*100) : 0;
+    html += '<div class="catrow"><span style="flex:0 0 44%">'+c+'</span><span class="bar"><i style="width:'+(o.ans? p:0)+'%"></i></span><span style="font-family:var(--mono);font-size:.8rem">'+o.ok+'/'+o.ans+(o.ans<o.n?' of '+o.n:'')+'</span></div>';
+  });
+  // missed list
+  const missed = [];
+  for(let i=0;i<N;i++) if(answers[i]!==null && answers[i]!==QUESTIONS[i].a) missed.push(i);
+  if(missed.length){
+    html += '<div class="missedlist"><h2 style="font-size:.95rem;margin-bottom:8px">Review missed questions</h2>';
+    missed.forEach(i=>{ html += '<button data-jump="'+i+'">Q'+(i+1)+'</button>'; });
+    html += '</div>';
+  }
+  html += '<div class="nav"><button class="btn ghost" id="backBtn">Back to questions</button><button class="btn" id="resetBtn">Start over</button></div>';
+  resultsCard.innerHTML = html;
+  resultsCard.classList.remove("hide");
+  qcard.classList.add("hide");
+  resultsCard.querySelectorAll("[data-jump]").forEach(b=>{
+    b.addEventListener("click", ()=>{ idx = parseInt(b.dataset.jump,10); render(); });
+  });
+  document.getElementById("backBtn").addEventListener("click", ()=>{ render(); });
+  document.getElementById("resetBtn").addEventListener("click", ()=>{
+    if(confirm("Clear all answers and start over?")){
+      answers = new Array(N).fill(null); idx = 0; render();
+    }
+  });
+  paintStrip(); paintScore();
+}
+
+buildStrip();
+render();
+</script>
+</body>
+</html>

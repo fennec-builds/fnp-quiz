@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3. FNP Professional Role &amp; Research — 50 Questions</title>
+<style>
+  :root{
+    --bg:#F2F5F7; --card:#FFFFFF; --ink:#14283A; --muted:#5B6B7A;
+    --teal:#0E7C86; --teal-dk:#0A5A62; --line:#DEE6EB;
+    --ok:#1F7A4D; --ok-bg:#E6F4EC; --bad:#B3362E; --bad-bg:#FBEAE8;
+    --mono:"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Avenir Next","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    line-height:1.55; padding:20px 14px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  h1{font-size:1.15rem;font-weight:700;letter-spacing:.01em}
+  h1 span{color:var(--teal)}
+  .score{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+  .score b{color:var(--ink)}
+  /* telemetry strip */
+  .striplabel{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--muted);margin:14px 0 5px}
+  .strip{display:flex;gap:2px;flex-wrap:nowrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .tick{flex:1;height:16px;background:#E2E9EE;border-radius:2px;cursor:pointer;transition:height .15s}
+  .tick.ok{background:var(--ok)} .tick.bad{background:var(--bad)}
+  .tick.cur{height:24px;outline:2px solid var(--teal);outline-offset:1px}
+  /* card */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;margin-top:18px;box-shadow:0 1px 3px rgba(20,40,58,.06)}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+  .qnum{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+  .chip{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-dk);background:#E3F1F2;border-radius:999px;padding:3px 10px}
+  .stem{font-size:1.02rem;margin-bottom:18px}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+    background:#FAFCFD;border:1.5px solid var(--line);border-radius:10px;
+    padding:13px 14px;margin-bottom:9px;cursor:pointer;font:inherit;color:inherit;
+    transition:border-color .12s, background .12s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--teal)}
+  .opt:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+  .opt:disabled{cursor:default}
+  .opt .ltr{font-family:var(--mono);font-weight:700;color:var(--muted);flex:0 0 auto}
+  .opt.sel-ok{border-color:var(--ok);background:var(--ok-bg)}
+  .opt.sel-bad{border-color:var(--bad);background:var(--bad-bg)}
+  .opt.reveal-ok{border-color:var(--ok);background:var(--ok-bg)}
+  .verdict{font-weight:700;margin:10px 0 6px}
+  .verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+  .rationale{background:#F4F8FA;border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:13px 15px;font-size:.93rem;margin-top:4px}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+  .btn{
+    font:inherit;font-weight:600;border:none;border-radius:10px;padding:11px 20px;cursor:pointer;
+    background:var(--teal);color:#fff;transition:background .12s;
+  }
+  .btn:hover{background:var(--teal-dk)}
+  .btn:disabled{background:#C4D0D8;cursor:default}
+  .btn.ghost{background:transparent;color:var(--teal);border:1.5px solid var(--teal)}
+  .btn.ghost:hover{background:#E3F1F2}
+  .btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+  /* results */
+  .bigscore{font-family:var(--mono);font-size:2.6rem;font-weight:700;color:var(--teal-dk)}
+  .sub{color:var(--muted);margin-bottom:18px}
+  .catrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+  .bar{flex:1;height:8px;background:#E2E9EE;border-radius:99px;overflow:hidden;margin:0 12px}
+  .bar i{display:block;height:100%;background:var(--teal)}
+  .missedlist{margin-top:16px}
+  .missedlist button{
+    font-family:var(--mono);font-size:.8rem;background:var(--bad-bg);color:var(--bad);
+    border:1px solid #E8C2BE;border-radius:8px;padding:6px 10px;margin:0 6px 6px 0;cursor:pointer;
+  }
+  .hide{display:none}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+  @media (max-width:480px){ .card{padding:16px} .strip{gap:1px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>3. FNP Professional Role &amp; Research <span>· 50 Items</span></h1>
+    <div class="score" id="scorebox">Answered <b id="sc-done">0</b>/50 &nbsp;·&nbsp; Correct <b id="sc-right">0</b></div>
+  </header>
+  <div class="striplabel">PROGRESS STRIP — GREEN CORRECT / RED MISSED — TAP A TICK TO JUMP</div>
+  <div class="strip" id="strip" aria-label="question progress"></div>
+
+  <div class="card" id="qcard"></div>
+
+  <div class="card hide" id="results"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+{c:"Research Design",q:"A researcher randomly assigns 500 patients to a new BP medication or placebo and follows them for 5 years measuring cardiovascular events. What type of study is this and why is it the gold standard?",o:["Cohort study — follows exposed groups forward","Case-control study — compares outcomes backward","Randomized controlled trial — randomization controls for confounding, best for establishing causation","Cross-sectional study — snapshot prevalence data"],a:2,r:"RCT is the gold standard for establishing CAUSATION because random assignment distributes known and unknown confounders equally between groups. Cohort: follows exposed vs unexposed groups forward (no randomization). Case-control: starts with the OUTCOME and looks backward for exposure (best for rare diseases). Cross-sectional: snapshot in time — gives prevalence data but cannot establish cause and effect."},
+{c:"Evidence Levels",q:"A researcher conducts a single well-designed randomized controlled trial showing a new drug reduces stroke risk. What level of evidence does this single RCT represent?",o:["Level I","Level II","Level III","Level IV"],a:1,r:"Evidence hierarchy: Level I = systematic review or meta-analysis of RCTs (strongest); Level II = single well-designed RCT; Level III = controlled trial WITHOUT randomization (quasi-experimental); Level IV = single case-control or cohort study; Level V = systematic review of descriptive/qualitative studies; Level VI = single descriptive or qualitative study; Level VII = expert opinion or case report (weakest). Knowing this hierarchy is ANCC-essential."},
+{c:"Research Design",q:"A study identifies 200 patients with lung cancer and 200 healthy controls, then compares their past smoking histories. What type of study is this, and which measure of association does it calculate?",o:["Cohort study — calculates relative risk","RCT — calculates risk ratio","Case-control study — calculates odds ratio","Cross-sectional — calculates prevalence ratio"],a:2,r:"Case-control study: starts with cases who HAVE the outcome (lung cancer) and controls who do not, then looks BACKWARD at exposure (smoking). Ideal for rare diseases. Calculates ODDS RATIO (OR) — NOT relative risk (cannot calculate RR because you don't know the true incidence). RCT and cohort studies calculate RELATIVE RISK. Key weakness: recall bias (cases remember past exposures differently than controls)."},
+{c:"Statistics",q:"A screening test for colorectal cancer has a sensitivity of 95%. What does this mean clinically?",o:["95% of people without cancer will test negative","95% of people WITH cancer will test positive (true positive rate)","The test is accurate 95% of the time overall","95% of positive results are true positives"],a:1,r:"Sensitivity = true positive rate = how well the test detects disease when it IS present. High sensitivity → few false negatives → good SCREENING test (don't want to miss disease). Remember: SNout (Sensitive test, Negative result rules OUT disease). Specificity = true negative rate = how well the test excludes disease when it is ABSENT. High specificity → few false positives → good CONFIRMATORY test. Remember: SPin (Specific test, Positive result rules IN disease)."},
+{c:"Statistics",q:"A confirmatory HIV test has 99.8% specificity. In a low-prevalence population, a patient tests positive. What is most true about the predictive value?",o:["The positive predictive value (PPV) is also approximately 99.8%","PPV is heavily influenced by disease PREVALENCE — in a low-prevalence population, even a specific test will generate more false positives, lowering PPV","Specificity and PPV are always equal","NPV decreases in low-prevalence populations"],a:1,r:"PPV (positive predictive value) = probability the patient truly has disease given a positive result. PPV INCREASES with higher disease prevalence and higher specificity. In a LOW-prevalence population, even a very specific test produces proportionally more false positives — lowering PPV. NPV (negative predictive value) is HIGH in low-prevalence populations. This is why population-level screening programs must account for prevalence when interpreting results."},
+{c:"Statistics",q:"A new anticoagulant reduces stroke risk from 12% to 8% over 3 years compared to placebo. What is the Number Needed to Treat (NNT)?",o:["8","12","25","100"],a:2,r:"NNT = 1 / Absolute Risk Reduction (ARR). ARR = control event rate − treatment event rate = 12% − 8% = 4% = 0.04. NNT = 1/0.04 = 25. Twenty-five patients must be treated for 3 years to prevent one additional stroke. NNT puts relative risk reduction in clinical perspective — a drug with a 33% RELATIVE risk reduction (12% to 8%) sounds impressive, but treating 25 people to benefit 1 may be less impressive in context of side effects and cost."},
+{c:"Statistics",q:"A study reports a relative risk (RR) of 0.68 with a 95% confidence interval of 0.52 to 0.89. How should this be interpreted?",o:["Not statistically significant — RR is less than 1","Statistically significant — CI does not cross 1.0; the intervention reduces risk by 32%","The CI is too wide to draw conclusions","RR below 1.0 always means the study failed"],a:1,r:"Relative risk < 1.0 means the intervention REDUCES the risk. 95% CI of 0.52-0.89 does NOT cross 1.0 → result is statistically significant. If the CI crossed 1.0 (e.g., 0.52-1.12), the result would NOT be significant. CI width reflects precision: narrow CI = larger sample, more precise; wide CI = smaller sample, less precise. RR = 0.68 means the treatment group had 32% lower risk than controls."},
+{c:"Statistics",q:"A study finds a p-value of 0.03. Which interpretation is CORRECT?",o:["There is a 97% probability the treatment works","There is a 3% probability of obtaining results this extreme if the null hypothesis were true","The effect size is clinically important","The study had adequate power"],a:1,r:"A p-value of 0.03 means: IF the null hypothesis were true (no real effect), there is a 3% probability of seeing results this extreme by chance. By convention, p<0.05 is 'statistically significant.' CRITICAL MISUNDERSTANDINGS: p-value does NOT tell you the probability the treatment works, the effect size, or clinical importance. A statistically significant p-value can represent a trivially small effect (with a large enough sample). Always look at both p-values AND confidence intervals together."},
+{c:"Statistics",q:"A researcher wants to detect a small but real difference between two drug regimens. She is concerned about missing a true effect. What type of error is she trying to avoid, and what increases study power?",o:["Type I error (alpha) — avoided by increasing sample size","Type II error (beta) — avoided by increasing sample size, increasing effect size, or lowering the significance threshold","Type II error (beta) — avoided by decreasing sample size","Type I error — reduced by blinding participants"],a:1,r:"Type I error (alpha): FALSELY rejecting the null hypothesis — saying a treatment works when it doesn't (false positive). Set by the significance level (p<0.05). Type II error (beta): FAILING to reject a false null hypothesis — missing a real effect (false negative). Power = 1 − beta = probability of detecting a true effect. Power is increased by: larger sample size, larger effect size, less variability in measurements, and higher alpha threshold. Most studies aim for 80% power."},
+{c:"Research Bias",q:"Participants in a weight loss study know they are being observed and exercise more than usual, improving their outcomes beyond what the intervention alone would cause. This is an example of:",o:["Selection bias","Recall bias","Hawthorne effect","Confounding"],a:2,r:"The Hawthorne effect: people CHANGE their behavior because they know they are being observed or studied — artificially inflating treatment outcomes. Minimized by blinding. Selection bias: systematic error in who is selected for a study (non-representative sample). Recall bias: participants with a disease remember past exposures differently than healthy controls — common in case-control studies. Confounding: a third variable related to both exposure and outcome that distorts the true relationship."},
+{c:"Research Bias",q:"In a case-control study examining the link between pesticide exposure and Parkinson's disease, cases (with Parkinson's) are more likely to recall past pesticide exposures than healthy controls. This is:",o:["Hawthorne effect","Selection bias","Recall bias — cases remember exposures more vividly than controls","Confounding by age"],a:2,r:"Recall bias is particularly problematic in RETROSPECTIVE and CASE-CONTROL studies. People with a disease often recall past exposures more vividly (or more frequently) than healthy controls, inflating the apparent association. Case-control studies are inherently susceptible to recall bias. Solutions: use objective records (medical records, employment records) instead of self-reported data when possible."},
+{c:"Research Methods",q:"A study in which neither the participants nor the researchers administering the treatment know who is in the treatment vs control group is called:",o:["Single-blind study","Double-blind study","Open-label study","Quasi-experimental study"],a:1,r:"Double-blind study: BOTH participants AND researchers are unaware of group assignments — the most rigorous for eliminating performance bias (participants changing behavior based on group knowledge) and detection bias (researchers unconsciously interpreting results differently). Single-blind: only participants are blinded. Open-label: everyone knows assignments — most susceptible to bias. Triple-blind: subjects, researchers, AND data analysts are all blinded."},
+{c:"Research Methods",q:"A study accurately measures what it is intended to measure and its results can be applied to the general population. Which terms describe these two properties?",o:["Reliability and validity","Internal validity and external validity","Sensitivity and specificity","Precision and accuracy"],a:1,r:"Internal validity: the degree to which the study accurately measures the true relationship between exposure and outcome (free from bias and confounding). External validity (generalizability): the degree to which results can be applied to populations OUTSIDE the study sample. RCTs often have high internal validity but lower external validity (highly selected patient populations). Observational studies in real-world populations may have higher external validity but lower internal validity."},
+{c:"Evidence-Based Practice",q:"An NP wants to find the best evidence for treating pediatric otitis media. She uses the PICO framework. What does PICO stand for?",o:["Patient, Intervention, Comparison, Outcome","Problem, Indicator, Control, Objective","Patient, Incidence, Criteria, Observation","Prevalence, Incidence, Confidence, Odds"],a:0,r:"PICO = Patient/Population/Problem, Intervention, Comparison, Outcome. Used to formulate a structured, searchable clinical question. Example: P = children 2-10 with acute otitis media; I = amoxicillin; C = watchful waiting; O = symptom resolution at 72 hours. A well-formed PICO question guides database searches (PubMed, Cochrane Library) and helps identify the most relevant evidence."},
+{c:"Ethics",q:"A 68-year-old competent patient refuses chemotherapy for curable lymphoma, stating she has made peace with dying. Her family begs you to 'talk sense into her.' Your ethical obligation is:",o:["Override her refusal — her family knows best","Respect her autonomous decision — a competent patient has the right to refuse any treatment","Report this to adult protective services as self-neglect","Seek a court order to mandate treatment"],a:1,r:"Autonomy: competent adults have the absolute right to REFUSE any medical treatment, even life-saving treatment. Your role: ensure she has full information, assess capacity (understand, appreciate, reason, communicate), and respect her decision once capacity is confirmed. Surrogate decision-making (family) is only invoked when the patient LACKS capacity. Documenting informed refusal thoroughly protects both the patient and provider."},
+{c:"Ethics",q:"A nurse practitioner recommends a statin to reduce cardiovascular risk in a patient with hyperlipidemia, even though the drug has potential side effects. Which ethical principle primarily justifies this recommendation?",o:["Justice","Nonmaleficence","Beneficence","Autonomy"],a:2,r:"Beneficence = acting in the patient's BEST INTEREST, promoting good. The NP recommends a proven intervention that reduces cardiovascular risk — a beneficent act. Nonmaleficence = first, do no harm (the principle that cautions about side effects). These two principles often exist in TENSION — a cancer treatment causes harm (chemo toxicity) while also doing good. Autonomy = patient's right to decide. Justice = fair distribution of resources."},
+{c:"Ethics",q:"An NP witnesses a colleague falsifying documentation of a procedure that was never performed. The NP's primary ethical and professional obligation is:",o:["Report directly to the patient first","Confront the colleague privately only and take no further action","Report through appropriate channels (supervisor, compliance, or state board if necessary)","Ignore it — not your responsibility"],a:2,r:"NPs have an ethical and professional obligation to address patient safety concerns and professional misconduct. The ANA Code of Ethics (Provision 3) requires nurses to protect patients, staff, and the public from incompetent, illegal, or unethical practice. Report through appropriate institutional channels first (supervisor, compliance, risk management). If unaddressed, escalate to the state board of nursing. Silence makes the bystander complicit in potential harm."},
+{c:"Legal Concepts",q:"A patient dies after an NP prescribed the wrong medication dose. The family sues for malpractice. What FOUR elements must be proven?",o:["Intent, harm, negligence, and documentation failure","Duty, breach, causation, and damages","Incompetence, recklessness, damages, and intent","License violation, harm, intent, and documentation"],a:1,r:"The four Ds of malpractice: (1) DUTY — a provider-patient relationship existed; (2) BREACH — the NP deviated from the standard of care; (3) CAUSATION — the breach directly caused the harm (proximate cause); (4) DAMAGES — the patient suffered actual harm (physical, financial, emotional). ALL FOUR must be proven. The standard of care is what a reasonably prudent NP with similar training and in a similar setting would do under the same circumstances."},
+{c:"Legal Concepts",q:"An NP reports suspected child abuse to CPS based on a child's bruising pattern consistent with inflicted injury. The parents deny abuse. Which statement is CORRECT?",o:["The NP can be sued for defamation if the report is unsubstantiated","Mandatory reporters are legally protected when reporting in good faith — proof is NOT required, only reasonable suspicion","The NP must wait for confirmation before reporting","HIPAA prohibits reporting without patient consent"],a:1,r:"Healthcare providers are MANDATORY REPORTERS of suspected child abuse in all 50 states. Legal protection applies when reporting is made IN GOOD FAITH — you do NOT need proof, only REASONABLE SUSPICION. Failure to report is a criminal offense in most states. HIPAA does NOT prevent mandatory reporting — public health and safety exceptions override confidentiality. Document all findings objectively (size, color, shape of bruises, child's exact words if disclosed)."},
+{c:"Legal Concepts",q:"A patient's employer calls requesting information about the patient's recent medical diagnosis, claiming it's needed for workers' compensation paperwork. Under HIPAA, the NP should:",o:["Provide the information — workers' compensation is always exempt from HIPAA","Release only the minimum necessary information relevant to the work-related injury, with the patient's authorization when possible","Release the complete medical record as requested","Refuse all disclosure under any circumstance"],a:1,r:"HIPAA workers' compensation exception: providers MAY disclose PHI to workers' compensation carriers and employers to the extent permitted by state law, without patient authorization, for work-related injury claims. However, the MINIMUM NECESSARY standard still applies — only disclose information relevant to the claim. Best practice: obtain patient authorization when possible. HIPAA's three exceptions allowing disclosure WITHOUT authorization: treatment, payment, and operations (TPO), plus mandatory reporting and public health."},
+{c:"Legal Concepts",q:"A competent 80-year-old with terminal cancer has a living will stating 'no mechanical ventilation.' She is now intubated in the ICU after a witnessed cardiac arrest. Her son is her healthcare proxy and demands she remain on the ventilator. What takes priority?",o:["The son's wishes — he is the legal healthcare proxy","The living will — it represents the patient's own expressed wishes when competent","The hospital's standard protocol","The intensivist's judgment alone"],a:1,r:"A living will reflects the patient's OWN autonomous wishes, expressed while competent. A healthcare proxy (HCPOA) is meant to CARRY OUT the patient's wishes, not override them. If the living will clearly states no mechanical ventilation and the clinical situation matches, the living will should guide care. The POLST/MOLST (actual medical orders) is even more immediate — it is actionable by EMS and healthcare teams without needing to locate the proxy. ANCC frequently tests the hierarchy of advance directives."},
+{c:"Legal Concepts",q:"A POLST form differs from a standard advance directive in which important way?",o:["A POLST is only valid in hospital settings","A POLST is an actual MEDICAL ORDER that is immediately actionable by EMS and healthcare teams — not just a statement of preferences","A POLST requires court approval to execute","A POLST only applies to patients under age 65"],a:1,r:"POLST (Physician Orders for Life-Sustaining Treatment) / MOLST: actual, signed MEDICAL ORDERS — immediately actionable across care settings including by EMS. Completed collaboratively by a provider and a seriously ill/frail patient. Covers: CPR, mechanical ventilation, artificial nutrition, hospitalization preferences. A standard advance directive (living will) is a document stating preferences — it must be interpreted and converted to orders. POLST fills that gap for high-risk patients."},
+{c:"NP Practice",q:"An NP practicing in a state with FULL PRACTICE AUTHORITY means:",o:["The NP can perform surgery independently","The NP can evaluate, diagnose, and prescribe without a required physician collaborative agreement or supervision","The NP must have a collaborative agreement for prescribing controlled substances only","The NP is supervised by the state board of medicine"],a:1,r:"Full Practice Authority (FPA) = NPs can practice to the full extent of their education and training without a mandated physician collaborative agreement or supervision — regulated solely by the state board of nursing. As of 2024, over half of U.S. states and D.C. have granted FPA. Reduced practice = requires a collaborative agreement with a physician. Restricted practice = requires physician supervision for both practice and prescribing. FPA states have expanded NP workforce in underserved areas."},
+{c:"NP Practice",q:"An NP bills Medicare directly under her own NPI for a new patient visit. She will be reimbursed at what percentage of the physician fee schedule?",o:["100%","85%","80%","75%"],a:1,r:"NPs billing Medicare under their own NPI are reimbursed at 85% of the physician fee schedule. The 100% rate applies ONLY to incident-to billing (services billed under the supervising physician's NPI), which requires: (1) physician initiated the plan of care, (2) established patient, (3) physician is physically present in the office suite (not the same room, but in the suite). Incident-to billing cannot be used for new problems or new patients."},
+{c:"NP Practice",q:"Which statement about DEA registration for NPs is correct?",o:["All NPs automatically receive DEA registration with their NP license","NPs must apply separately for DEA registration to prescribe controlled substances, and this is in addition to state prescribing authority","DEA registration is only required for Schedule II substances","DEA registration is managed by the state board of nursing"],a:1,r:"DEA (Drug Enforcement Administration) registration is a SEPARATE federal requirement, independent of state licensure or certification, required to prescribe controlled substances (Schedules II-V). NPs must apply and pay a fee (renewed every 3 years). Some states also require a separate state controlled substance license. NPs must also comply with state-specific prescribing laws, which may be more restrictive than federal DEA regulations."},
+{c:"Quality Improvement",q:"An NP leads a QI project to reduce catheter-associated UTIs (CAUTIs) in a nursing home. She uses the PDSA cycle. What does each letter stand for?",o:["Prevent, Detect, Study, Analyze","Plan, Do, Study, Act","Practice, Demonstrate, Sustain, Achieve","Protocol, Deploy, Survey, Assess"],a:1,r:"PDSA cycle (Plan-Do-Study-Act): PLAN the change — identify the problem, form a hypothesis, plan the intervention. DO — implement the change on a small scale. STUDY — collect and analyze data, compare to predictions. ACT — if successful, implement broadly; if not, revise and repeat. PDSA is the most-tested QI model on ANCC boards. Also know: LEAN (eliminate waste/inefficiency) and Six Sigma (reduce process variation to reduce errors)."},
+{c:"Quality Improvement",q:"A wrong-site surgery occurs at a hospital. Per The Joint Commission, this requires which specific process?",o:["Anonymous peer review only","Immediate root cause analysis (RCA) — required for all sentinel events","Filing a police report","No formal process if the error is quickly corrected"],a:1,r:"The Joint Commission defines a SENTINEL EVENT as an unexpected event involving death or serious physical/psychological harm, or the risk thereof, NOT related to the natural course of illness. Sentinel events REQUIRE root cause analysis (RCA) — a systematic, retrospective, blame-free process that identifies SYSTEM failures (not individual blame) to prevent recurrence. Examples: wrong-site surgery, retained surgical foreign body, transfusion of wrong blood type, patient suicide in a care setting."},
+{c:"Quality Improvement",q:"An NP notices that hand hygiene compliance on her unit is 45%. She proposes a SBAR communication to her medical director. What should the A (Assessment) component include?",o:["The full history of hand hygiene policies","Her analysis of what is causing the problem and the potential patient safety impact","Only the data showing 45% compliance","The specific resources needed to fix it"],a:1,r:"SBAR: Situation (what is happening now — 'Hand hygiene compliance is 45%'), Background (relevant history and context — 'Joint Commission standard is >90%; we've had 3 CAUTI cases this quarter'), Assessment (your clinical analysis — 'I believe the primary causes are lack of accessible sanitizer stations and no real-time feedback'), Recommendation (what you need — 'I recommend installing dispensers at every bedside and implementing a weekly audit with visual feedback'). SBAR structures communication for safety and efficiency."},
+{c:"Social Determinants",q:"A patient misses multiple follow-up appointments for her diabetes management. Further inquiry reveals she has no transportation and works two jobs. Which framework best describes the root cause of her non-adherence?",o:["Patient non-compliance — refer to behavioral health","Social determinants of health — address transportation and work constraints as barriers to care","Cognitive impairment — order neuropsychological testing","Cultural non-acceptance of diabetes treatment"],a:1,r:"Social determinants of health (SDOH) are the non-medical conditions that profoundly affect health outcomes: economic stability, education, social/community context, health and healthcare access, neighborhood/built environment. Transportation and employment constraints are SDOH barriers. NPs must screen for SDOH (using tools like PRAPARE or AHC Health-Related Social Needs screener) and connect patients to community resources, care coordination, and social services — not label them as non-compliant."},
+{c:"Social Determinants",q:"Health disparities are BEST defined as:",o:["Differences in health outcomes that are inevitable due to genetic variation","Preventable differences in the burden of disease, injury, or violence between population groups — closely linked to social and economic disadvantage","Differences in healthcare access that occur only in rural areas","Variation in health outcomes caused solely by behavioral choices"],a:1,r:"Health disparities: preventable differences in health outcomes, disease burden, or access to healthcare between groups defined by race, ethnicity, income, geography, sexual orientation, disability status, or other social characteristics. They are AVOIDABLE and UNJUST — rooted in historical and ongoing social, economic, and political inequities. NPs have an ethical obligation (ANA Code of Ethics, Provision 9) to address disparities through culturally humble care, advocacy, and health policy engagement."},
+{c:"Cultural Competence",q:"Cultural HUMILITY differs from cultural COMPETENCE in which key way?",o:["Cultural competence is the preferred modern approach","Cultural humility is a finite set of skills acquired through coursework","Cultural humility emphasizes ongoing self-reflection, recognition of power imbalances, and lifelong learning — rather than claiming mastery of other cultures","They are interchangeable terms"],a:2,r:"Cultural competence implies acquiring a fixed set of cultural knowledge. Cultural humility is now the preferred framework — it is an ongoing, lifelong process of: self-reflection about one's own biases and limitations, recognizing power imbalances in the provider-patient relationship, being open to learning from patients, and institutional accountability. A culturally humble NP does NOT assume that cultural stereotypes apply to every individual patient — they ask, listen, and adapt."},
+{c:"Ethics",q:"A researcher wants to conduct a study involving cognitively impaired nursing home residents. What ethical safeguard is MOST important?",o:["Obtain consent from the facility administrator only","The IRB must approve the study, and surrogate consent from a legally authorized representative is required — with ongoing assent from the resident","No additional safeguards are needed beyond standard consent","The study may proceed without IRB review since it involves nursing home residents"],a:1,r:"Vulnerable populations (cognitively impaired, prisoners, children, pregnant women, economically disadvantaged) require ADDITIONAL PROTECTIONS in research. IRB (Institutional Review Board) review is MANDATORY for any research involving human subjects — its purpose is to protect participants' rights, welfare, and privacy. For cognitively impaired subjects: surrogate (legally authorized representative) consent is required PLUS assent from the subject to the extent possible. Studies involving vulnerable populations receive heightened IRB scrutiny."},
+{c:"Ethics",q:"The Tuskegee Syphilis Study is an example of violation of which ethical principle, and what was the major consequence for research ethics?",o:["Beneficence — no new treatments were developed","Justice and nonmaleficence — Black men were denied treatment to study disease progression, directly leading to the Belmont Report and federal human subjects protections","Autonomy only — participants weren't told the study objectives","No ethical violations occurred — standard practice at the time"],a:1,r:"The Tuskegee Syphilis Study (1932-1972) violated MULTIPLE ethical principles: deception (men were told they were receiving treatment for 'bad blood'), denial of effective treatment (penicillin was withheld after it became available), exploitation of a vulnerable minority population (justice violation), and harm (nonmaleficence). The public outcry directly led to the BELMONT REPORT (1979) — defining the three core principles for human research ethics: respect for persons (autonomy), beneficence, and justice. This report underpins all modern IRB regulations."},
+{c:"Research Methods",q:"An NP wants to study whether a new education program reduces hospital readmission rates. She implements the program in her clinic and compares her clinic's 30-day readmission rate to a neighboring clinic that receives usual care — but she cannot randomize patients. What type of study design is this?",o:["Randomized controlled trial","Systematic review","Quasi-experimental study — has an intervention but lacks randomization","Case-control study"],a:2,r:"Quasi-experimental study: has an INTERVENTION but lacks RANDOM ASSIGNMENT. Level III evidence. Common in healthcare QI and real-world settings where randomization is impractical or unethical. Controls confounding less effectively than an RCT. Can still demonstrate association and support practice change when RCT data is unavailable. Common threats to validity: selection bias (the two clinics may have different patient populations), history effects (other concurrent changes)."},
+{c:"Statistics",q:"A study reports a mean systolic BP of 130 mmHg with a standard deviation (SD) of 10 mmHg. Assuming normal distribution, approximately what percentage of the population falls between 120-140 mmHg?",o:["50%","68%","95%","99.7%"],a:1,r:"The empirical rule for normal (bell-curve) distribution: 68% of data falls within 1 SD of the mean (mean ± 1 SD); 95% within 2 SD (mean ± 2 SD); 99.7% within 3 SD (mean ± 3 SD). Here: mean = 130, SD = 10. 130 ± 10 = 120-140 = 1 SD = 68%. This is the 68-95-99.7 rule — memorize it. SD measures the SPREAD of data around the mean; a larger SD means more variability."},
+{c:"NP Practice",q:"Which organization provides the certification examination that NPs must pass to practice as Family Nurse Practitioners?",o:["National League for Nursing (NLN)","American Nurses Association (ANA)","American Nurses Credentialing Center (ANCC) or American Association of Nurse Practitioners (AANP)","National Council of State Boards of Nursing (NCSBN)"],a:2,r:"Two organizations offer FNP board certification: ANCC (American Nurses Credentialing Center) — offers the FNP-BC exam, which this question bank is designed for. AANP (American Association of Nurse Practitioners) — offers the FNP-C exam. Both are nationally recognized and accepted for state licensure as an NP. ANA sets professional standards and the Code of Ethics but does not administer certification exams. NCSBN administers the NCLEX (RN/PN licensure exam)."},
+{c:"Ethics",q:"A patient with limited English proficiency is scheduled for a procedure. The patient's adult child volunteers to interpret. What is the BEST practice?",o:["Use the family member — it builds trust","Use a qualified medical interpreter — family members may filter, omit, or alter information, compromising informed consent","Proceed with the procedure using written consent forms only","Cancel the procedure until the patient learns English"],a:1,r:"Professional medical interpreters (in-person or telephonic) are the standard for informed consent with LEP patients. Family members and friends should NOT be used as interpreters for medical encounters: they may omit sensitive information (diagnoses, sexual history, substance use), filter information based on family dynamics, or lack medical vocabulary. Title VI of the Civil Rights Act requires that healthcare organizations receiving federal funding provide MEANINGFUL ACCESS (including interpretation) to LEP patients. Using family members violates informed consent integrity."},
+{c:"Research Methods",q:"The Cochrane Library and PubMed are databases used by NPs to find evidence. What type of study would you find FIRST when seeking the HIGHEST level of evidence on a clinical topic?",o:["Case reports","Expert consensus statements","Systematic reviews and meta-analyses","Single cohort studies"],a:2,r:"When searching for the highest level of evidence, look for SYSTEMATIC REVIEWS AND META-ANALYSES first (Level I evidence) — they pool data from multiple high-quality RCTs, providing the most reliable conclusions. Search strategy: Cochrane Library (gold standard for systematic reviews) → PubMed filtered to 'systematic reviews' or 'meta-analysis' → clinical practice guidelines (which should themselves be based on systematic reviews). Move down the evidence pyramid only if higher-level evidence doesn't exist for your specific question."},
+{c:"Legal Concepts",q:"An NP is named in a malpractice lawsuit. Her employer's attorney tells her the hospital will cover her under respondeat superior. What does this mean?",o:["The NP is personally responsible for all damages","The employer is legally responsible for the negligent acts of employees performed within the scope of employment","The NP loses her license automatically","The case is dismissed because she is employed"],a:1,r:"Respondeat superior (Latin: 'let the master answer') = an employer is vicariously liable for the negligent acts of employees performed WITHIN the scope of their employment. The hospital/practice assumes legal responsibility. However, NPs should STILL carry their own professional liability (malpractice) insurance — employer coverage may not extend to acts outside scope, independent practice, or moonlighting. Also, individual NPs may still be named personally. The standard of care question is SEPARATE from who pays damages."},
+{c:"Health Literacy",q:"An NP explains a complex diabetes management plan to a patient with low health literacy. Which strategy is MOST effective for confirming understanding?",o:["Ask 'Do you understand?' and proceed if patient nods","Use medical terminology to ensure precision","Teach-back method — ask the patient to explain the plan back in their own words","Provide a 10-page written handout for the patient to review at home"],a:2,r:"The teach-back method is the gold standard for confirming health literacy and patient understanding: ask the patient to explain the information back in THEIR OWN WORDS ('Can you show me how you'll use your insulin pen at home?'). This is NOT testing the patient — it is testing YOUR communication. If they can't explain it, YOU rephrase and try again. 'Do you understand?' is unreliable — patients with low literacy often say yes to avoid embarrassment. Use plain language (5th-6th grade reading level), limit to 3 key points per visit, and use visual aids."},
+{c:"DNP/Advanced Practice",q:"A DNP-prepared NP is asked to contribute to a clinical practice guideline committee. Her MOST appropriate contribution compared to a PhD-prepared colleague would be:",o:["Conducting original quantitative research to generate new nursing knowledge","Applying and translating existing evidence into practice systems and clinical protocols","Publishing basic science research findings","Leading doctoral dissertation research programs only"],a:1,r:"DNP (Doctor of Nursing Practice) = PRACTICE doctorate — focuses on evidence-based practice IMPLEMENTATION, clinical leadership, health systems improvement, and translating research into practice. DNP capstone projects apply evidence to improve patient or population outcomes. PhD in Nursing = RESEARCH doctorate — generates NEW nursing knowledge through original research. Both degrees contribute to advancing the profession, but their FOCUS differs: DNP = applying existing evidence; PhD = creating new evidence. Most clinical practice guidelines are developed using both DNP and PhD contributions."}
+,
+{c:"Research Design",q:"A cross-sectional study surveys 2,000 adults about current smoking status and current COPD diagnosis. What can this study determine, and what is its main limitation?",o:["Causation — it can prove smoking causes COPD","Prevalence — the proportion of the population with COPD at one point in time; limitation is it cannot establish temporal sequence (which came first)","Incidence — new cases of COPD over time","It can calculate both relative risk and odds ratio"],a:1,r:"Cross-sectional study = a SNAPSHOT at one point in time. It measures PREVALENCE (existing cases) — not incidence (new cases). It can identify associations between variables but CANNOT establish causation or temporal sequence (we don't know if the exposure or outcome came first). Useful for hypothesis generation, planning further studies, and public health surveillance. Cannot calculate relative risk or odds ratio meaningfully for causal inference."},
+{c:"Statistics",q:"A drug company reports their new cholesterol medication reduces LDL by 35% RELATIVE to placebo. The placebo group averaged 100 mg/dL, and the drug group averaged 65 mg/dL. What is the ABSOLUTE reduction?",o:["35 mg/dL — and this is the most clinically useful number for an individual patient","35% — relative and absolute reduction are always equal","65 mg/dL","Cannot be calculated from this data"],a:0,r:"Absolute reduction = 100 − 65 = 35 mg/dL. Relative reduction = 35/100 = 35%. In this case they happen to be numerically close, but this is not always true. Relative risk reduction can be MISLEADING when baseline risk is very low — always look for ABSOLUTE numbers. NNT = 1/ARR (using event rates, not LDL values). Pharmaceutical marketing often highlights relative reductions because the numbers sound more impressive."},
+{c:"Ethics",q:"A patient tells you in confidence that he has been physically abusing his elderly mother who lives with him. He is her sole caregiver. What is your obligation?",o:["Maintain confidentiality — the patient disclosed this in a therapeutic relationship","Report to Adult Protective Services — elder abuse is mandated reporting in all states","Only report if the elder comes in with visible injuries","Refer the patient to anger management and wait to see if it continues"],a:1,r:"Elder abuse is MANDATED REPORTING in all 50 U.S. states — healthcare providers are required to report SUSPECTED elder abuse, neglect, or exploitation to Adult Protective Services (APS). Reasonable suspicion is all that is required — you do not need the victim's consent or confirmation. The duty to protect a vulnerable adult overrides patient confidentiality in this context. Document objectively, report, and if the elder is your patient, arrange a safety assessment."},
+{c:"Legal Concepts",q:"An NP documents 'patient was non-compliant' in the medical record. A legal and patient-centered approach would instead document:",o:["The same — 'non-compliant' is standard medical terminology","Patient reported not taking medications as prescribed — and then explore and document the REASON (e.g., cost, side effects, transportation)","Leave it blank to avoid liability","'Patient refused care' instead"],a:1,r:"'Non-compliant' is a loaded, judgmental term that implies patient fault and can damage the therapeutic relationship. It also fails to document the REASON, which is clinically important. Best practice: document observed behavior objectively ('Patient reported not filling prescription due to cost') and explore barriers. This approach supports shared decision-making, cultural humility, and SDOH assessment. Many EHR style guides and legal experts now advise against 'non-compliant' as documentation language."},
+{c:"NP Practice",q:"An NP in a state with REDUCED practice authority wants to prescribe controlled substances. In addition to DEA registration and a state NP license, what else is required?",o:["Nothing additional — DEA registration alone is sufficient","A collaborative agreement with a physician, as required by state law","Board of pharmacy approval for each prescription","A separate federal waiver for Schedule III-V only"],a:1,r:"In REDUCED practice states, NPs must have a collaborative practice agreement (CPA) with a physician — a formal, written document specifying the scope of collaboration, patient referral processes, and prescribing parameters. The CPA is required by state law, not federal law. Requirements vary widely: some states mandate a physician co-sign every prescription, others require only a written agreement on file. Full practice authority states have ELIMINATED the CPA requirement. This distinction is heavily tested on FNP boards."},
+{c:"Research Methods",q:"In a clinical trial, allocation concealment means:",o:["Participants are blinded to which group they are in","The assignment sequence is hidden from the researchers enrolling participants until after enrollment — preventing selection bias in group assignment","The data analyst does not know which group received treatment","Only the statistician knows the true outcomes"],a:1,r:"Allocation concealment prevents SELECTION BIAS in RCTs — if researchers know upcoming assignments, they may enroll 'better' patients into the treatment group, biasing results. Methods: sealed opaque envelopes, central randomization by phone or computer. This is DIFFERENT from blinding: blinding hides assignment AFTER enrollment; allocation concealment hides it BEFORE. Allocation concealment affects internal validity of the randomization process itself."},
+{c:"Quality Improvement",q:"After analyzing medication error data, an NP notices most errors occur during nursing shift changes. Per 'just culture' principles, the best approach is:",o:["Discipline the nurses making errors","Identify and fix the SYSTEM factors causing errors during handoffs — use standardized handoff tools like I-PASS or SBAR","Fire any nurse who makes an error","Keep the error data confidential to avoid alarm"],a:1,r:"Just culture: a balanced approach to patient safety that distinguishes between: human error (system design failures — blameless), at-risk behavior (needs coaching), and reckless behavior (intentional, requires discipline). Most medical errors are SYSTEM failures, not individual failures. Just culture encourages REPORTING errors (near-misses too) without fear of punishment, so root causes can be fixed. Punitive cultures suppress reporting, making systems LESS safe. The NP's role: lead system change, implement standardized handoff tools, create psychologically safe reporting environments."},
+{c:"Ethics",q:"Which of the following best describes the ethical principle of JUSTICE as it applies to NP practice?",o:["Treating each patient with kindness and empathy","Acting in the patient's best clinical interest","Fair and equitable distribution of healthcare resources and treating similar cases similarly","Obtaining informed consent before every procedure"],a:2,r:"Justice in healthcare ethics: fair allocation of limited resources, equal treatment regardless of socioeconomic status, race, gender, or insurance status, and treating similar clinical cases similarly. Applied examples: ensuring uninsured patients receive the same standard of care as insured patients; advocating for equitable access to specialty referrals; addressing disparities in pain management across racial groups. NPs have an ethical and professional obligation (ANA Code of Ethics, Provision 9) to challenge unjust systems and advocate for vulnerable populations."},
+{c:"NP Practice",q:"An NP sees a patient for follow-up of hypertension, a problem initiated and managed by the supervising physician. The NP bills under the physician's NPI using incident-to rules. Which scenario would DISQUALIFY incident-to billing?",o:["The NP documents the visit independently","The patient reports a new problem — chest pain — that the physician has not yet evaluated","The physician is physically present in the suite but in another exam room","The visit is for medication refill of an existing prescription"],a:1,r:"Incident-to billing (100% Medicare reimbursement under physician's NPI) requires ALL of: (1) physician initiated the plan of care for this problem; (2) established patient/problem; (3) physician is physically present in the office suite. If the patient presents with a NEW problem the physician has NOT yet evaluated, incident-to billing is NOT permitted — the NP must bill under their own NPI (85%) or the physician must personally evaluate the new problem. New problems break the incident-to chain."}
+];
+
+const N = QUESTIONS.length;
+let idx = 0;
+let answers = new Array(N).fill(null); // selected option index
+const LETTERS = ["A","B","C","D"];
+
+const strip = document.getElementById("strip");
+const qcard = document.getElementById("qcard");
+const resultsCard = document.getElementById("results");
+
+function buildStrip(){
+  strip.innerHTML = "";
+  for(let i=0;i<N;i++){
+    const t = document.createElement("div");
+    t.className = "tick";
+    t.title = "Question " + (i+1);
+    t.addEventListener("click", ()=>{ idx = i; render(); });
+    strip.appendChild(t);
+  }
+}
+function paintStrip(){
+  const ticks = strip.children;
+  for(let i=0;i<N;i++){
+    const t = ticks[i];
+    t.className = "tick";
+    if(answers[i] !== null){
+      t.classList.add(answers[i] === QUESTIONS[i].a ? "ok" : "bad");
+    }
+    if(i === idx && !resultsVisible()) t.classList.add("cur");
+  }
+}
+function resultsVisible(){ return !resultsCard.classList.contains("hide"); }
+
+function counts(){
+  let done=0, right=0;
+  for(let i=0;i<N;i++){
+    if(answers[i]!==null){ done++; if(answers[i]===QUESTIONS[i].a) right++; }
+  }
+  return {done,right};
+}
+function paintScore(){
+  const {done,right} = counts();
+  document.getElementById("sc-done").textContent = done;
+  document.getElementById("sc-right").textContent = right;
+}
+
+function render(){
+  resultsCard.classList.add("hide");
+  qcard.classList.remove("hide");
+  const Q = QUESTIONS[idx];
+  const picked = answers[idx];
+  let html = "";
+  html += '<div class="meta"><span class="qnum">QUESTION ' + (idx+1) + ' / ' + N + '</span><span class="chip">' + Q.c + '</span></div>';
+  html += '<p class="stem">' + Q.q + '</p>';
+  Q.o.forEach((opt,i)=>{
+    let cls = "opt";
+    if(picked !== null){
+      if(i === picked && picked === Q.a) cls += " sel-ok";
+      else if(i === picked) cls += " sel-bad";
+      else if(i === Q.a) cls += " reveal-ok";
+    }
+    html += '<button class="'+cls+'" data-i="'+i+'" '+(picked!==null?"disabled":"")+'><span class="ltr">'+LETTERS[i]+'</span><span>'+opt+'</span></button>';
+  });
+  if(picked !== null){
+    const good = picked === Q.a;
+    html += '<div class="verdict '+(good?"ok":"bad")+'">'+(good ? "Correct" : "Incorrect — answer is " + LETTERS[Q.a])+'</div>';
+    html += '<div class="rationale">'+Q.r+'</div>';
+  }
+  html += '<div class="nav">';
+  html += '<button class="btn ghost" id="prevBtn" '+(idx===0?"disabled":"")+'>Back</button>';
+  if(idx < N-1){
+    html += '<button class="btn" id="nextBtn">Next question</button>';
+  } else {
+    html += '<button class="btn" id="finishBtn">See results</button>';
+  }
+  html += '</div>';
+  qcard.innerHTML = html;
+
+  qcard.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      if(answers[idx] !== null) return;
+      answers[idx] = parseInt(btn.dataset.i,10);
+      render();
+    });
+  });
+  const prev = document.getElementById("prevBtn");
+  if(prev) prev.addEventListener("click", ()=>{ idx--; render(); });
+  const next = document.getElementById("nextBtn");
+  if(next) next.addEventListener("click", ()=>{ idx++; render(); });
+  const fin = document.getElementById("finishBtn");
+  if(fin) fin.addEventListener("click", showResults);
+  paintStrip(); paintScore();
+}
+
+function showResults(){
+  const {done,right} = counts();
+  const pct = done ? Math.round((right/done)*100) : 0;
+  // category breakdown
+  const cats = {};
+  QUESTIONS.forEach((Q,i)=>{
+    if(!cats[Q.c]) cats[Q.c] = {n:0, ok:0, ans:0};
+    cats[Q.c].n++;
+    if(answers[i]!==null){ cats[Q.c].ans++; if(answers[i]===Q.a) cats[Q.c].ok++; }
+  });
+  let html = '<div class="bigscore">'+right+' / '+done+' ('+pct+'%)</div>';
+  html += '<p class="sub">'+(done<N ? (N-done)+' question'+(N-done===1?"":"s")+' unanswered — they are not counted against you. ' : '')+'A passing pace on the real ANCC is roughly the low-to-mid 70s percent range, so use this as a directional gauge, not a verdict.</p>';
+  html += '<h2 style="font-size:.95rem;margin-bottom:6px">By category</h2>';
+  Object.keys(cats).forEach(c=>{
+    const o = cats[c];
+    const p = o.ans ? Math.round((o.ok/o.ans)*100) : 0;
+    html += '<div class="catrow"><span style="flex:0 0 44%">'+c+'</span><span class="bar"><i style="width:'+(o.ans? p:0)+'%"></i></span><span style="font-family:var(--mono);font-size:.8rem">'+o.ok+'/'+o.ans+(o.ans<o.n?' of '+o.n:'')+'</span></div>';
+  });
+  // missed list
+  const missed = [];
+  for(let i=0;i<N;i++) if(answers[i]!==null && answers[i]!==QUESTIONS[i].a) missed.push(i);
+  if(missed.length){
+    html += '<div class="missedlist"><h2 style="font-size:.95rem;margin-bottom:8px">Review missed questions</h2>';
+    missed.forEach(i=>{ html += '<button data-jump="'+i+'">Q'+(i+1)+'</button>'; });
+    html += '</div>';
+  }
+  html += '<div class="nav"><button class="btn ghost" id="backBtn">Back to questions</button><button class="btn" id="resetBtn">Start over</button></div>';
+  resultsCard.innerHTML = html;
+  resultsCard.classList.remove("hide");
+  qcard.classList.add("hide");
+  resultsCard.querySelectorAll("[data-jump]").forEach(b=>{
+    b.addEventListener("click", ()=>{ idx = parseInt(b.dataset.jump,10); render(); });
+  });
+  document.getElementById("backBtn").addEventListener("click", ()=>{ render(); });
+  document.getElementById("resetBtn").addEventListener("click", ()=>{
+    if(confirm("Clear all answers and start over?")){
+      answers = new Array(N).fill(null); idx = 0; render();
+    }
+  });
+  paintStrip(); paintScore();
+}
+
+buildStrip();
+render();
+</script>
+</body>
+</html>
